@@ -10,11 +10,11 @@ This standard can be installed with the [Composer](https://getcomposer.org/) dep
 
 1. Install the coding standard as a dependency of your project
 
-       composer require --dev escapestudios/symfony2-coding-standard:3.x-dev
+       composer globa require cryonighter/cryonighter-coding-standard
 
 2. Add the coding standard to the PHP_CodeSniffer install path
 
-       phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard
+       phpcs --config-set installed_paths %COMPOSER_HOME%/vendor/escapestudios/symfony2-coding-standard,%COMPOSER_HOME%/vendor/cryonighter/cryonighter-coding-standard
 
 3. Check the installed coding standards for "Symfony" and "Cryonighter"
 
