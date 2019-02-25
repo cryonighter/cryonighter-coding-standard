@@ -4,7 +4,7 @@
     "description": "CodeSniffer ruleset for the cryonighter coding standard",
     "keywords": ["coding standard", "phpcs"],
     "homepage": "https://github.com/cryonighter/cryonighter-coding-standard",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "authors": [
         {
