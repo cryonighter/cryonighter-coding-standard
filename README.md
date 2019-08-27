@@ -1,6 +1,6 @@
 # Cryonighter PHP CodeSniffer Coding Standard
 
-A coding standard to check against the [cryonighter coding standards](https://github.com/cryonighter/cryonighter-coding-standard/docs/standard-description-ru.md), originally shamelessly copied from the -disappeared- opensky/Symfony2-coding-standard repository.
+A coding standard to check against the [cryonighter coding standards](https://github.com/cryonighter/cryonighter-coding-standard/blob/master/docs/standard-description-ru.md), originally shamelessly copied from the -disappeared- opensky/Symfony2-coding-standard repository.
 
 ## Installation via Composer
 
@@ -17,10 +17,6 @@ This standard can be installed with the [Composer](https://getcomposer.org/) dep
 3. Check the installed coding standards for "Symfony" and "Cryonighter"
 
        phpcs -i
-
-4. Done!
-
-       phpcs /path/to/code
 
 
 ## Installation Stand-alone
@@ -41,6 +37,11 @@ This standard can be installed with the [Composer](https://getcomposer.org/) dep
 
        phpcs -i
 
-5. Done!
 
-       phpcs /path/to/code
+# Usage
+
+Via command line
+
+    phpcs --standard=Cryonighter --ignore=/path/to/exclude-code /path/to/code
+
+PHP Code Sniffer Wiki: [usage](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage), [advanced usage](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage)
