@@ -42,6 +42,6 @@ This standard can be installed with the [Composer](https://getcomposer.org/) dep
 
 Via command line
 
-    phpcs --standard=Cryonighter --ignore=/path/to/exclude-code /path/to/code
+    phpcs --standard=Cryonighter --extensions=php --ignore=/path/to/exclude-code /path/to/code
 
 PHP Code Sniffer Wiki: [usage](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage), [advanced usage](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage)
