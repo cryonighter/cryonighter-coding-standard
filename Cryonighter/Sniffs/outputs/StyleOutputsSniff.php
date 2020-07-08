@@ -5,6 +5,13 @@
  * An example of a hash comment is:
  *
  * <code>
+ *   if ($i>1) {
+ *       return true;
+ *   } else {
+ *       return false;
+ *   }
+ *
+ *   return false;
  * </code>
  * 
  * @category  PHP
@@ -37,8 +44,6 @@ class StyleOutputsSniff implements Sniff
      */
     public function register()
     {
-        $tokens = Tokens::$functionNameTokens;
-
         $tokens[] = T_RETURN;
         $tokens[] = T_YIELD;
         $tokens[] = T_THROW;
@@ -60,17 +65,41 @@ class StyleOutputsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        
-        // $cnt = 1;
-        
-      
-        // if ($cnt == 1) {
-        //     $error = 'error testing); found %s';
-        //     $data  = array(trim($tokens[$stackPtr]['content']));
-        //     $phpcsFile->addError($error, $stackPtr, 'Found', $data);
-        //     return;
-        //     exit();
-        // }  
+        $token  = $tokens[$stackPtr];
+        $errorStatus = false;
+        // line this token
+        $thisLine = $token['line'];
+        // position token on prev line
+        $stackPtrPrev = $stackPtr - 1;
+        // token on prev line
+        $tokenPrev  = $tokens[$stackPtrPrev];
+        // find prev line
+        $i = 0;
+        while ($tokenPrev['line'] >= $thisLine || $tokenPrev['type'] == 'T_WHITESPACE') {
+            $tokenPrev  = $tokens[$stackPtrPrev];
+            $stackPtrPrev--;
+            $i++;
+        }
+        // no space condition error 
+        $spaseLineSize = $thisLine - $tokenPrev['line'];
+        // an exception - T_OPEN_CURLY_BRACKET
+        // code error
+        if ($spaseLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
+            // no emty line translation exception
+            $msg = 'Missing empty line found before "%s";';
+            $errorStatus = true;
+        } 
+        // Excess emty line translation exception
+        if($spaseLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
+            $msg = 'Excess empty line found before "%s";';
+            $errorStatus = true;
 
+        }
+
+        $data  = array(trim($tokens[$stackPtr]['content']));
+
+        if ($errorStatus) {
+            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
+        }
     }//end process()
 }//end class
