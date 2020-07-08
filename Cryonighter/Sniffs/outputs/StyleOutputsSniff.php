@@ -103,4 +103,3 @@ class StyleOutputsSniff implements Sniff
         }
     }//end process()
 }//end class
-
