@@ -13,7 +13,7 @@
  *
  *   return false;
  * </code>
- * 
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dontsov Dmitry ddontsov93@gmail.com
@@ -49,7 +49,6 @@ class StyleOutputsSniff implements Sniff
         $tokens[] = T_THROW;
 
         return $tokens;
-
     }
 
     /**
@@ -79,25 +78,26 @@ class StyleOutputsSniff implements Sniff
             $stackPtrPrev--;
             $i++;
         }
-        // no space condition error 
+        // no space condition error
         $spaseLineSize = $thisLine - $tokenPrev['line'];
+
         // an exception - T_OPEN_CURLY_BRACKET
         if ($spaseLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
             // no empty line translation exception
             $msg = 'Missing empty line found before "%s";';
             $errorStatus = true;
-        } 
+        }
+
         // Excess empty line translation exception
-        if($spaseLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
+        if ($spaseLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
             $msg = 'Excess empty line found before "%s";';
             $errorStatus = true;
-
         }
         // generate error output
         $data  = array(trim($tokens[$stackPtr]['content']));
+
         if ($errorStatus) {
             $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
         }
     }
 }
-
