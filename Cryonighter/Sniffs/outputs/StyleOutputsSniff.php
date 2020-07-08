@@ -65,6 +65,7 @@ class StyleOutputsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
         $errorStatus = false;
+        $msg = '';
         // line this token
         $thisLine = $token['line'];
         // position token on prev line
