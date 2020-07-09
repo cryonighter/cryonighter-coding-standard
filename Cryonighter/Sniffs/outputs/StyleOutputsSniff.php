@@ -77,27 +77,16 @@ class StyleOutputsSniff implements Sniff
         // counting empty lines
         $emptyLines = 0;
         // find prev line
-        while (
-            $tokenPrev['line'] >= $thisLine ||
-            $tokenPrev['type'] == 'T_WHITESPACE' ||
-            $tokenPrev['type'] == 'T_COMMENT'
-        ) {
-            $tokenPrev  = $tokens[$stackPtrPrev];
+        while (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) || $tokenPrev['line'] >= $thisLine) {
+            $tokenPrev = $tokens[$stackPtrPrev];
             if ($tokenPrev['type'] == 'T_COMMENT') {
                 $i++;
             }
-            $tokenPrev  = $tokens[$stackPtrPrev];
+            $tokenPrev = $tokens[$stackPtrPrev];
             
-            if (
-                (
-                    $tokenPrev['type'] == 'T_WHITESPACE' ||
-                    $tokenPrev['type'] == 'T_COMMENT'
-                ) &&
-                nl2br($tokenPrev['content']) != $tokenPrev['content']
-            ) {
+            if (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) && nl2br($tokenPrev['content']) != $tokenPrev['content']) {
                 $emptyLines++;
             }
-            
             $stackPtrPrev--;
         }
 
@@ -109,7 +98,6 @@ class StyleOutputsSniff implements Sniff
         if ($i > 0) {
             $spaceLineSize = $emptyLines;
         }
-        $spaceLineCondition = false;
 
         // an exception - T_OPEN_CURLY_BRACKET
         if ($spaceLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
