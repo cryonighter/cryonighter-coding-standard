@@ -101,7 +101,7 @@ class StyleOutputsSniff implements Sniff
             $stackPtrPrev--;
         }
 
-        // conting empty lines
+        // counting empty lines
         $emptyLines = $emptyLines - $i;
         // no space condition error
         $spaceLineSize = $thisLine - $tokenPrev['line'];
