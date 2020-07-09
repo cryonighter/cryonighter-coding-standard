@@ -72,28 +72,58 @@ class StyleOutputsSniff implements Sniff
         $stackPtrPrev = $stackPtr - 1;
         // token on prev line
         $tokenPrev  = $tokens[$stackPtrPrev];
-        // find prev line
+        // comment counting
         $i = 0;
-        while ($tokenPrev['line'] >= $thisLine || $tokenPrev['type'] == 'T_WHITESPACE') {
+        // counting empty lines
+        $emptyLines = 0;
+        // find prev line
+        while (
+            $tokenPrev['line'] >= $thisLine ||
+            $tokenPrev['type'] == 'T_WHITESPACE' ||
+            $tokenPrev['type'] == 'T_COMMENT'
+        ) {
             $tokenPrev  = $tokens[$stackPtrPrev];
+            if ($tokenPrev['type'] == 'T_COMMENT') {
+                $i++;
+            }
+            $tokenPrev  = $tokens[$stackPtrPrev];
+            
+            if (
+                (
+                    $tokenPrev['type'] == 'T_WHITESPACE' ||
+                    $tokenPrev['type'] == 'T_COMMENT'
+                ) &&
+                nl2br($tokenPrev['content']) != $tokenPrev['content']
+            ) {
+                $emptyLines++;
+            }
+            
             $stackPtrPrev--;
-            $i++;
         }
+
+        // conting empty lines
+        $emptyLines = $emptyLines - $i;
         // no space condition error
-        $spaseLineSize = $thisLine - $tokenPrev['line'];
+        $spaceLineSize = $thisLine - $tokenPrev['line'];
+
+        if ($i > 0) {
+            $spaceLineSize = $emptyLines;
+        }
+        $spaceLineCondition = false;
 
         // an exception - T_OPEN_CURLY_BRACKET
-        if ($spaseLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
+        if ($spaceLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
             // no empty line translation exception
             $msg = 'Missing empty line found before "%s";';
             $errorStatus = true;
         }
 
         // Excess empty line translation exception
-        if ($spaseLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
+        if ($spaceLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
             $msg = 'Excess empty line found before "%s";';
             $errorStatus = true;
         }
+
         // generate error output
         $data  = array(trim($tokens[$stackPtr]['content']));
 
