@@ -77,14 +77,20 @@ class StyleOutputsSniff implements Sniff
         // counting empty lines
         $emptyLines = 0;
         // find prev line
-        while (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) || $tokenPrev['line'] >= $thisLine) {
+        while (
+            in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT'])
+            || $tokenPrev['line'] >= $thisLine
+        ) {
             $tokenPrev = $tokens[$stackPtrPrev];
             if ($tokenPrev['type'] == 'T_COMMENT') {
                 $i++;
             }
             $tokenPrev = $tokens[$stackPtrPrev];
             
-            if (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) && nl2br($tokenPrev['content']) != $tokenPrev['content']) {
+            if (
+                in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT'])
+                && nl2br($tokenPrev['content']) != $tokenPrev['content']
+            ) {
                 $emptyLines++;
             }
             $stackPtrPrev--;
