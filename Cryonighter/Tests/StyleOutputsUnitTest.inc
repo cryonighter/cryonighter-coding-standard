@@ -7,16 +7,44 @@
  * @author    Dontsov Dmitry ddontsov93@gmail.com
  */
 
-function functionName()
+// function
+function functionExampleOne()
 {
     // comment example
-    return 1;
+    
+    return true;
 }
-// cycle example 1
-foreach ($variable as $key => $value) {
+// function
+function functionExampleTwo()
+{
+    // cycle example 3
+    do {
+        
+        return true;
+    } while (0);
+}
+
+// operator
+if (date('m') > 8) {
+    
+    return true;
+} elseif (date('m') > 10) {
     // comment example
     
-    return $variable;
+    return true;
+}
+
+$rows = array(
+    '1' => 1,
+    '2' => 2,
+    '3' => 3,
+);
+
+// cycle example 1
+foreach ($rows as $key => $row) {
+    // comment example
+    
+    return $row;
 }
 
 // cycle example 2
@@ -25,44 +53,24 @@ for ($i=0; $i < 10; $i++) {
      * comment example
      */ 
     
-    return $i;
+    return true;
 }
 
 // cycle example 2
 while ($i <= 10) {
-    
-    return $i;
-}
-
-// cycle example 3
-do {
-    
-    return $i;
-} while ($i > 0);
-
-// operator
-if ($i>1) {
-    
-    return $i;
-} else {
     // comment example
-
-    return $i;
+    $i++;
+    return true;
 }
 
-// exeption exaple
+// exception example
 try {
     // comment example
-
     return $i;
 } catch (Exception $e) {
     // comment example
-    
     return $i;
 } finally {
     // comment example
-    
     return $i;
 }
-// comment example
-return 1;
