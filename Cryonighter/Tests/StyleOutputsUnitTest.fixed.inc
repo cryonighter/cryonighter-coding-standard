@@ -26,11 +26,11 @@ if (date('m') > 8) {
     return true;
 }
 
-$rows = array(
+$rows = [
     '1' => 1,
     '2' => 2,
     '3' => 3,
-);
+];
 
 // cycle example 1
 foreach ($rows as $key => $row) {

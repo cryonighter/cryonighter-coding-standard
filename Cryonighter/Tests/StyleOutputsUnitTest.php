@@ -1,7 +1,4 @@
 <?php
-/**
- * This file is part of the phpcs standard
- */
 
 namespace Cryonighter\Tests\Classes;
 
@@ -25,10 +22,10 @@ class StyleOutputsUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return array(
+        return [
             78  => 1,
             483  => 1,
-        );
+        ];
     }
 
     /**
