@@ -1,6 +1,6 @@
 <?php
 /**
- * This file fixed errors exaple
+ * This file fixed errors example
  */
 
 // function

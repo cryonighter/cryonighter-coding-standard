@@ -1,10 +1,6 @@
 <?php
 /**
  * This file is part of the phpcs standard
- *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dontsov Dmitry ddontsov93@gmail.com
  */
 
 namespace Cryonighter\Tests\Classes;
