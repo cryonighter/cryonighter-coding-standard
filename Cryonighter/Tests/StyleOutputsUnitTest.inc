@@ -66,9 +66,11 @@ while ($i <= 10) {
 // exception example
 try {
     // comment example
+
     return $i;
 } catch (Exception $e) {
     // comment example
+
     return $i;
 } finally {
     // comment example
