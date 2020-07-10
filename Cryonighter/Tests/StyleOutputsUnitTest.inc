@@ -1,10 +1,6 @@
 <?php
 /**
  * This file errors exaple
- *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dontsov Dmitry ddontsov93@gmail.com
  */
 
 // function

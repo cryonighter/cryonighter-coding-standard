@@ -14,9 +14,6 @@
  *   return false;
  * </code>
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dontsov Dmitry ddontsov93@gmail.com
  */
 
 namespace Cryonighter\Sniffs\Classes;
