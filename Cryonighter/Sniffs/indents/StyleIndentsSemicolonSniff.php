@@ -24,9 +24,9 @@ class StyleIndentsSemicolonSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = array(
+    public $supportedTokenizers = [
         'PHP',
-    );
+    ];
 
     /**
      * If TRUE, whitespace rules are not checked for blank lines.
