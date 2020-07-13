@@ -47,11 +47,11 @@ class StyleOutputsSniff implements Sniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
+     * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param object                      $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
+     * @param \File                       $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token in the
+     *                                               stack passed in $tokens.
      *
      * @return void
      */
@@ -60,6 +60,7 @@ class StyleOutputsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
         $errorStatus = false;
+        $errorType = 0;
         $msg = '';
         // line this token
         $thisLine = $token['line'];
@@ -104,20 +105,40 @@ class StyleOutputsSniff implements Sniff
         if ($spaceLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
             // no empty line translation exception
             $msg = 'Missing empty line found before "%s";';
+            $errorType = 1;
             $errorStatus = true;
         }
 
         // Excess empty line translation exception
         if ($spaceLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
             $msg = 'Excess empty line found before "%s";';
+            $errorType = -1;
             $errorStatus = true;
         }
-
         // generate error output
         $data[] = trim($tokens[$stackPtr]['content']);
+        $cursor = $stackPtr;
+        $fix = false;
 
-        if ($errorStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
+        if ($errorStatus) {                      
+            $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
+            // fix problems
+            if ($fix === true) {
+                if ($errorType > 0) {
+                    $phpcsFile->fixer->addNewlineBefore($stackPtr);
+                } else {
+                    $phpcsFile->fixer->beginChangeset();
+                    $target = $thisLine - $spaceLineSize;
+        
+                    $cursor = $stackPtr - 1;
+                    while ($tokens[$cursor]['line'] > $target) {
+                        $phpcsFile->fixer->replaceToken($cursor, '');
+                        $cursor--;
+                    }
+                    $phpcsFile->fixer->endChangeset();
+
+                }
+            }
         }
     }
 }

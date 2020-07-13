@@ -2,7 +2,6 @@
 /**
  * This file fixed errors example
  */
-
 // function
 function functionExampleOne()
 {
@@ -39,10 +38,10 @@ foreach ($rows as $key => $row) {
 }
 
 // cycle example 2
-for ($i=0; $i < 10; $i++) {
+for ($i = 0; $i < 10; $i++) {
     /*
      * comment example
-     */ 
+     */
     return true;
 }
 

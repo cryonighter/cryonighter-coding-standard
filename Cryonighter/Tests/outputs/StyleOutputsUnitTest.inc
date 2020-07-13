@@ -2,6 +2,7 @@
 /**
  * This file errors example
  */
+<?php
 
 // function
 function functionExampleOne()
@@ -22,7 +23,6 @@ function functionExampleTwo()
 
 // operator
 if (date('m') > 8) {
-    
     return true;
 } elseif (date('m') > 10) {
     // comment example
@@ -44,10 +44,10 @@ foreach ($rows as $key => $row) {
 }
 
 // cycle example 2
-for ($i=0; $i < 10; $i++) {
+for ($i = 0; $i < 10; $i++) {
     /*
      * comment example
-     */ 
+     */
     
     return true;
 }
@@ -70,5 +70,12 @@ try {
     return $i;
 } finally {
     // comment example
+
+    
+
+
+
+
+
     return $i;
 }
