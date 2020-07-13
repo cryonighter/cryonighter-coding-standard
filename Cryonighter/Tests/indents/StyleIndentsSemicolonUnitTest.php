@@ -35,6 +35,6 @@ class StyleIndentsSemicolonUnitTest extends AbstractSniffUnitTest
      */
     public function getWarningList()
     {
-        return array();
+        return [];
     }
 }
