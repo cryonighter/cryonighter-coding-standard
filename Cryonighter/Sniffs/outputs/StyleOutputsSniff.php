@@ -20,6 +20,7 @@ namespace Cryonighter\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 class StyleOutputsSniff implements Sniff
 {
@@ -113,23 +114,11 @@ class StyleOutputsSniff implements Sniff
             $errorStatus = true;
         }
 
-
-
-
-        $debug[] = $msg;
-        $debug[] = var_export($token, true);
-        $debug[] = var_export($tokenPrev, true);
-        $debug = implode("\r\n___________\r\n", $debug);
-
-
-
-
-
         // generate error output
         $data[] = trim($tokens[$stackPtr]['content']);
 
         if ($errorStatus) {
-            $phpcsFile->addError($debug, $stackPtr, 'Found', $data);
+            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
         }
     }
 }
