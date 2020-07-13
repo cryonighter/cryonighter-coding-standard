@@ -2,12 +2,11 @@
 /**
  * This file errors example
  */
-$a = 1 ;
-$b = 2 ;
+$a = 1                             /**/;
+$b = 2 /* comment */;
 
 $arr = [
     'foo',
-    'bar',
+    'bar' /* baz */
 ] ;
-
-return $a ;
+return $a  ;

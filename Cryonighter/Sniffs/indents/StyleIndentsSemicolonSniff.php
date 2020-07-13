@@ -29,6 +29,15 @@ class StyleIndentsSemicolonSniff implements Sniff
     );
 
     /**
+     * If TRUE, whitespace rules are not checked for blank lines.
+     *
+     * Blank lines are those that contain only whitespace.
+     *
+     * @var boolean
+     */
+    public $ignoreBlankLines = false;
+
+    /**
      * Returns the token types that this sniff is interested in.
      *
      * @return array(int)
@@ -57,18 +66,37 @@ class StyleIndentsSemicolonSniff implements Sniff
         $msg = 'Whitespace found before semicolon "%s" symbol;';
         // token cursor
         $cursor = $stackPtr - 1;
-        $cursorToken = $tokens[$cursor];
+
+        $exemptions = [
+            'T_WHITESPACE',
+            'T_COMMENT',
+            'T_DOC_COMMENT_OPEN_TAG',
+            'T_DOC_COMMENT_STRING',
+            'T_DOC_COMMENT_CLOSE_TAG',
+        ];
 
         // check error
-        if (in_array($cursorToken['type'], ['T_WHITESPACE', 'T_COMMENT'])) {
+        if (in_array($tokens[$cursor]['type'], $exemptions)) {
             $errorStatus = true;
         }
 
         // create error
-        $data  = array(trim($tokens[$stackPtr]['content']));
-
         if ($errorStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
+            
+            $data  = array(trim($tokens[$stackPtr]['content']));
+            // $phpcsFile->addError($error, $stackPtr, 'Found', $data);
+            
+            $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
+            // add beautifier
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+                $cursor = $stackPtr - 1;
+                while (in_array($tokens[$cursor]['type'], $exemptions)) {
+                    $phpcsFile->fixer->replaceToken($cursor, '');
+                    $cursor--;
+                }
+                $phpcsFile->fixer->endChangeset();
+            }
         }
     }
 }

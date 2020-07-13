@@ -7,7 +7,6 @@ $b = 2;
 
 $arr = [
     'foo',
-    'bar',
+    'bar' /* baz */
 ];
-
 return $a;
