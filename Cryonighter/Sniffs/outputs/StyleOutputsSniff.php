@@ -82,7 +82,6 @@ class StyleOutputsSniff implements Sniff
                 $i++;
             }
             $tokenPrev = $tokens[$stackPtrPrev];
-            
             if (
                 in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT'])
                 && nl2br($tokenPrev['content']) != $tokenPrev['content']
@@ -91,16 +90,13 @@ class StyleOutputsSniff implements Sniff
             }
             $stackPtrPrev--;
         }
-
         // counting empty lines
         $emptyLines = $emptyLines - $i;
         // no space condition error
         $spaceLineSize = $thisLine - $tokenPrev['line'];
-
         if ($i > 0) {
             $spaceLineSize = $emptyLines;
         }
-
         // an exception - T_OPEN_CURLY_BRACKET
         if ($spaceLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
             // no empty line translation exception
@@ -108,7 +104,6 @@ class StyleOutputsSniff implements Sniff
             $errorType = 1;
             $errorStatus = true;
         }
-
         // Excess empty line translation exception
         if ($spaceLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
             $msg = 'Excess empty line found before "%s";';
@@ -117,10 +112,7 @@ class StyleOutputsSniff implements Sniff
         }
         // generate error output
         $data[] = trim($tokens[$stackPtr]['content']);
-        $cursor = $stackPtr;
-        $fix = false;
-
-        if ($errorStatus) {                      
+        if ($errorStatus) {
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
             // fix problems
             if ($fix === true) {
@@ -129,14 +121,12 @@ class StyleOutputsSniff implements Sniff
                 } else {
                     $phpcsFile->fixer->beginChangeset();
                     $target = $thisLine - $spaceLineSize;
-        
                     $cursor = $stackPtr - 1;
                     while ($tokens[$cursor]['line'] > $target) {
                         $phpcsFile->fixer->replaceToken($cursor, '');
                         $cursor--;
                     }
                     $phpcsFile->fixer->endChangeset();
-
                 }
             }
         }

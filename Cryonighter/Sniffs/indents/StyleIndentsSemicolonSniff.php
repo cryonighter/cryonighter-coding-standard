@@ -49,11 +49,9 @@ class StyleIndentsSemicolonSniff implements Sniff
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
-     *
      * @param File                       $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
-     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
@@ -63,7 +61,6 @@ class StyleIndentsSemicolonSniff implements Sniff
         $msg = 'Whitespace found before semicolon "%s" symbol;';
         // token cursor
         $cursor = $stackPtr - 1;
-
         $exemptions = [
             'T_WHITESPACE',
             'T_COMMENT',
@@ -71,18 +68,14 @@ class StyleIndentsSemicolonSniff implements Sniff
             'T_DOC_COMMENT_STRING',
             'T_DOC_COMMENT_CLOSE_TAG',
         ];
-
         // check error
         if (in_array($tokens[$cursor]['type'], $exemptions)) {
             $errorStatus = true;
         }
-
         // create error
         if ($errorStatus) {
-            
             $data[] = trim($tokens[$stackPtr]['content']);
             // $phpcsFile->addError($error, $stackPtr, 'Found', $data);
-            
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
             // add beautifier
             if ($fix === true) {
