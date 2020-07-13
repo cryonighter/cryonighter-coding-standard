@@ -14,7 +14,6 @@ namespace Cryonighter\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
 
 class StyleIndentsSemicolonSniff implements Sniff
 {
@@ -40,7 +39,7 @@ class StyleIndentsSemicolonSniff implements Sniff
     /**
      * Returns the token types that this sniff is interested in.
      *
-     * @return array | int[]
+     * @return array(int)
      */
     public function register()
     {
