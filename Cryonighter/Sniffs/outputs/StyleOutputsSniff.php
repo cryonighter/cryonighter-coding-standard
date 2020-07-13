@@ -20,7 +20,6 @@ namespace Cryonighter\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
 
 class StyleOutputsSniff implements Sniff
 {
