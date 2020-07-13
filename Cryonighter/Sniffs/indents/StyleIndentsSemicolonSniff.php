@@ -17,7 +17,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class StyleIndentsSemicolonSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
