@@ -30,9 +30,9 @@ class StyleOutputsSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = array(
+    public $supportedTokenizers = [
         'PHP',
-    );
+    ];
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -116,7 +116,7 @@ class StyleOutputsSniff implements Sniff
         }
 
         // generate error output
-        $data  = array(trim($tokens[$stackPtr]['content']));
+        $data[] = trim($tokens[$stackPtr]['content']);
 
         if ($errorStatus) {
             $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
