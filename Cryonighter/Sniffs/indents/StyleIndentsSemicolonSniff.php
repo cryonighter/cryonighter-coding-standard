@@ -61,7 +61,6 @@ class StyleIndentsSemicolonSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
         $errorStatus = false;
         $msg = 'Whitespace found before semicolon "%s" symbol;';
         // token cursor
