@@ -37,7 +37,7 @@ class StyleOutputsSniff implements Sniff
     /**
      * Returns the token types that this sniff is interested in.
      *
-     * @return array(int)
+     * @return array | int[]
      */
     public function register()
     {
