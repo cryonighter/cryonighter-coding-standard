@@ -82,7 +82,7 @@ class StyleIndentsSemicolonSniff implements Sniff
         // create error
         if ($errorStatus) {
             
-            $data  = array(trim($tokens[$stackPtr]['content']));
+            $data[] = trim($tokens[$stackPtr]['content']);
             // $phpcsFile->addError($error, $stackPtr, 'Found', $data);
             
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
