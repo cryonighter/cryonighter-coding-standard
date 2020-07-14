@@ -68,23 +68,25 @@ class StyleIndentsSemicolonSniff implements Sniff
             'T_DOC_COMMENT_STRING',
             'T_DOC_COMMENT_CLOSE_TAG',
         ];
-        // check error
+
         if (in_array($tokens[$cursor]['type'], $exemptions)) {
             $errorStatus = true;
         }
-        // create error
+
         if ($errorStatus) {
             $data[] = trim($tokens[$stackPtr]['content']);
             // $phpcsFile->addError($error, $stackPtr, 'Found', $data);
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
-            // add beautifier
+
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
                 $cursor = $stackPtr - 1;
+
                 while (in_array($tokens[$cursor]['type'], $exemptions)) {
                     $phpcsFile->fixer->replaceToken($cursor, '');
                     $cursor--;
                 }
+
                 $phpcsFile->fixer->endChangeset();
             }
         }
