@@ -47,6 +47,11 @@ class StyleOperatorEolsSniff implements Sniff
     public function register()
     {
         $tokens[] = T_IF;
+        $tokens[] = T_WHILE;
+        //$tokens[] = T_DO;
+        //$tokens[] = T_FOR;
+        //$tokens[] = T_FOREACH;
+        //$tokens[] = T_SWITCH;
 
         return $tokens;
     }
@@ -61,44 +66,50 @@ class StyleOperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $errorBeforeStatus = false;
+        $errorBeforeStatus = true;
         $errorAfterStatus = true;
         $msg[] = '';
         
         // check before error
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
+        $cursor = $cursorBegin;
+
+        while ($tokens[$cursorBegin]['line'] >= ($tokens[$cursor]['line'] - 1)) {
+            $cursor--;
+
+            if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
+                $msg[] = 'Missing empty line found before "%s";';
+                $errorBeforeStatus = true;
+                break;
+            }
         
-        if (
-            $tokens[$cursorBegin-2]['type'] != 'T_WHITESPACE' &&
-            $tokens[$cursorBegin-2]['content'] == nl2br($tokens[$cursorBegin-2]['content'])
-        ) {
-            $msg[] = 'Missing empty line found before "%s";';
-            $errorBeforeStatus = true;
         }
 
         // check after error
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
+        $cursor = $cursorEnd;
 
+        while ($tokens[$cursorEnd]['line'] <= ($tokens[$cursor]['line'] + 1)) {
+            $cursor++;
+
+            if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
+                $msg[] = 'Missing empty line found after "%s";';
+                $errorBeforeStatus = true;
+                break;
+            }
         
+        }
 
         $msg = implode("\r\n", $msg);
-        // debug
-        $error[] = $msg;
-        // $error[] = ($this->findCursorBegin($tokens, $stackPtr));
-        
-        $error[] = var_export($tokens[$stackPtr]['line'], true);
-        $error[] = var_export($tokens[$cursorEnd]['line'], true);
-        $error = implode("\r\n___________\r\n", $error);
-
-
-        
-
         // create error
         if ($errorBeforeStatus || $errorAfterStatus) {
-            $data[] = trim($tokens[$stackPtr]['content']);
+            
+            $data[] = trim($tokens[$cursorBegin]['content']);
+            $data[] = trim($tokens[$cursorEnd]['content']);
             $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
-            // $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
+            // $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
         }
+    
     }
 
     /**
@@ -128,7 +139,6 @@ class StyleOperatorEolsSniff implements Sniff
             
             $result = $cursor;
         }
-
 
         // long broken comment block
         if (trim($token[$cursor - 1]['content']) == '*/') {
@@ -163,17 +173,18 @@ class StyleOperatorEolsSniff implements Sniff
      * @return int   $result end code block
      */
     private function findCursorEnd($token, $cursor) {
+
         // end --> token
-        // code else and elseif blocks
-        while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+        while ($token[$cursor]['type'] != 'T_OPEN_CURLY_BRACKET') {
             $cursor++;
         }
+        
+        $cursor = $token[$cursor]['bracket_closer'];
 
         // this line
         $fixLine = $token[$cursor]['line'];
-        $cursor++;
-
-        // this is end or begin other block    
+    
+        // code else and elseif blocks (T_IF)
         while ($token[$cursor]['line'] == $fixLine) {
             $cursor++;
             
@@ -181,32 +192,31 @@ class StyleOperatorEolsSniff implements Sniff
                 $token[$cursor]['line'] == $fixLine &&
                 $token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET'
             ) {
-                $cursor = $this->findCursorEndSublock($token, $cursor);
+                $cursor = $token[$cursor]['bracket_closer'];
+                $cursor = $this->findCursorEndSunblock($token, $cursor);
+                break;
             }
 
         }
 
-        return $cursor - 1;
+        // $cursor--;
+
+        while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+            $cursor--;
+        }
+
+        return $cursor;
     }
 
     /**
-     * rererererererererererecursisision
+     * check is dream inside dream inside dream level three inside... fuck shut it!
      * @param  array $token
      * @param  int   $cursor
      * @return int   $result end code block
      */
-    private function findCursorEndSublock($token, $cursor) {
-        // return $cursor;
-        // end --> token
+    private function findCursorEndSunblock($token, $cursor) {
         // this line
-        // code else and elseif blocks
-        while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
-            $cursor++;
-        }
-
         $fixLine = $token[$cursor]['line'];
-        $cursor++;
-
         // this is end or begin other block    
         while ($token[$cursor]['line'] == $fixLine) {
             $cursor++;
@@ -215,13 +225,17 @@ class StyleOperatorEolsSniff implements Sniff
                 $token[$cursor]['line'] == $fixLine &&
                 $token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET'
             ) {
-                $cursor = $this->findCursorEndSublock($token, $cursor);
+                $cursor = $this->findCursorEnd($token, $cursor);
+                break;
             }
 
         }
 
-        return $cursor;  
+        while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+            $cursor--;
+        }
 
+        return $cursor;
     }
 
 }
