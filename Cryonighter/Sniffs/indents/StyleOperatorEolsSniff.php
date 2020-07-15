@@ -48,10 +48,9 @@ class StyleOperatorEolsSniff implements Sniff
     {
         $tokens[] = T_IF;
         $tokens[] = T_WHILE;
-        //$tokens[] = T_DO;
-        //$tokens[] = T_FOR;
-        //$tokens[] = T_FOREACH;
-        //$tokens[] = T_SWITCH;
+        $tokens[] = T_FOR;
+        $tokens[] = T_FOREACH;
+        $tokens[] = T_SWITCH;
 
         return $tokens;
     }
@@ -66,8 +65,8 @@ class StyleOperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $errorBeforeStatus = true;
-        $errorAfterStatus = true;
+        $errorBeforeStatus = false;
+        $errorAfterStatus = false;
         $msg[] = '';
         
         // check before error
@@ -188,18 +187,13 @@ class StyleOperatorEolsSniff implements Sniff
         while ($token[$cursor]['line'] == $fixLine) {
             $cursor++;
             
-            if (
-                $token[$cursor]['line'] == $fixLine &&
-                $token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET'
-            ) {
+            if ($token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET') {
                 $cursor = $token[$cursor]['bracket_closer'];
                 $cursor = $this->findCursorEndSunblock($token, $cursor);
                 break;
             }
 
         }
-
-        // $cursor--;
 
         while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
             $cursor--;
