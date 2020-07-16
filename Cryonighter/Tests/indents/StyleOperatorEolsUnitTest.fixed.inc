@@ -1,6 +1,6 @@
 <?php
 
-// // ///
+$c = 1;
 
 // operators
 if (true) {

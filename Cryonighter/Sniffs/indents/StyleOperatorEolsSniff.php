@@ -7,7 +7,10 @@
  * <code>
  * $cursor--;
  * if (true) {
- *     return $cursor;
+ *     if (true) {
+ *         $c = 3;
+ *     }
+ *     $c = 4;
  * }
  * $cursor--;
  * </code>
@@ -46,11 +49,11 @@ class StyleOperatorEolsSniff implements Sniff
      */
     public function register()
     {
+        $tokens[] = T_SWITCH;
         $tokens[] = T_IF;
         $tokens[] = T_WHILE;
-        $tokens[] = T_FOR;
         $tokens[] = T_FOREACH;
-        $tokens[] = T_SWITCH;
+        $tokens[] = T_FOR;
 
         return $tokens;
     }
@@ -65,8 +68,8 @@ class StyleOperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $errorBeforeStatus = false;
-        $errorAfterStatus = false;
+        $errorBeforeStatus = true;
+        $errorAfterStatus = true;
         $msg[] = '';
         
         // check before error
@@ -90,7 +93,11 @@ class StyleOperatorEolsSniff implements Sniff
 
         while ($tokens[$cursorEnd]['line'] <= ($tokens[$cursor]['line'] + 1)) {
             $cursor++;
-
+            
+            if (!isset($tokens[$cursor]['type'])) {
+                break;
+            }
+            
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
                 $msg[] = 'Missing empty line found after "%s";';
                 $errorBeforeStatus = true;
@@ -99,13 +106,10 @@ class StyleOperatorEolsSniff implements Sniff
         
         }
 
-        $msg = implode("\r\n", $msg);
         // create error
+        $msg = implode("\r\n", $msg);
         if ($errorBeforeStatus || $errorAfterStatus) {
-            
-            $data[] = trim($tokens[$cursorBegin]['content']);
-            $data[] = trim($tokens[$cursorEnd]['content']);
-            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
+            $phpcsFile->addError($msg, $stackPtr, 'Found');
             // $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
         }
     
@@ -184,15 +188,21 @@ class StyleOperatorEolsSniff implements Sniff
         $fixLine = $token[$cursor]['line'];
     
         // code else and elseif blocks (T_IF)
-        while ($token[$cursor]['line'] == $fixLine) {
+        while ($token[$cursor]['line'] == $fixLine && $token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET') {
             $cursor++;
             
-            if ($token[$cursor]['type'] == 'T_OPEN_CURLY_BRACKET') {
+            if (isset($token[$cursor]['bracket_closer'])) {
                 $cursor = $token[$cursor]['bracket_closer'];
-                $cursor = $this->findCursorEndSunblock($token, $cursor);
-                break;
-            }
+            } else {
+                    
+                while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+                    $cursor++;
+                }
 
+            }
+                
+            $cursor = $this->findCursorEndSunblock($token, $cursor);
+            break;
         }
 
         while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
@@ -223,10 +233,6 @@ class StyleOperatorEolsSniff implements Sniff
                 break;
             }
 
-        }
-
-        while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
-            $cursor--;
         }
 
         return $cursor;
