@@ -155,7 +155,7 @@ class StyleOperatorEolsSniff implements Sniff
             $cursor--;
             $result = $cursor;
         }
-        
+
         // long comment block
         if ($token[$cursor - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
             $cursor--;
