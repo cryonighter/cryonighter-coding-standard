@@ -68,9 +68,9 @@ class StyleOperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $errorBeforeStatus = true;
-        $errorAfterStatus = true;
-        $msg[] = '';
+        $errorBeforeStatus = false;
+        $errorAfterStatus = false;
+        $msg[] = '"%s"';
         
         // check before error
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
@@ -80,7 +80,7 @@ class StyleOperatorEolsSniff implements Sniff
             $cursor--;
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $msg[] = 'Missing empty line found before "%s";';
+                $msg[] = 'Missing empty line found before;';
                 $errorBeforeStatus = true;
                 break;
             }
@@ -99,7 +99,7 @@ class StyleOperatorEolsSniff implements Sniff
             }
             
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $msg[] = 'Missing empty line found after "%s";';
+                $msg[] = 'Missing empty line found after;';
                 $errorBeforeStatus = true;
                 break;
             }
@@ -108,8 +108,9 @@ class StyleOperatorEolsSniff implements Sniff
 
         // create error
         $msg = implode("\r\n", $msg);
+        $data[] = trim($tokens[$stackPtr]['content']);
         if ($errorBeforeStatus || $errorAfterStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found');
+            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
             // $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
         }
     
