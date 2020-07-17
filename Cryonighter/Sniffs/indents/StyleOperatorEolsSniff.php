@@ -43,7 +43,7 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * Returns the token types that this sniff is interested in.
      *
-     * @return array(int)
+     * @return array
      */
     public function register()
     {
