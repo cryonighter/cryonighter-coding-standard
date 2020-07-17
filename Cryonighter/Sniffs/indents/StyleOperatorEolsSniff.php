@@ -251,5 +251,4 @@ class StyleOperatorEolsSniff implements Sniff
         return $result;
         
     }
-
 }
