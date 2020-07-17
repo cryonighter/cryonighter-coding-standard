@@ -59,8 +59,8 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param File   $phpcsFile The file being scanned.
-     * @param int    $stackPtr  The position of the current token in the stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int $stackPtr  The position of the current token in the stack passed in $tokens.
      *
      * @return void
      */
@@ -105,9 +105,9 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * @param  array $token
-     * @param  int   $cursor
+     * @param  int $cursor
      *
-     * @return int   $result begin code block
+     * @return int $result begin code block
      */
     private function findCursorBegin($token, $cursor)
     {
@@ -162,9 +162,9 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * @param  array $token
-     * @param  int   $cursor
+     * @param  int $cursor
      *
-     * @return int   $result end code block
+     * @return int $result end code block
      */
     private function findCursorEnd($token, $cursor) {
 
@@ -207,9 +207,9 @@ class StyleOperatorEolsSniff implements Sniff
      * check is dream inside dream inside dream level three inside... fuck shut it!
      *
      * @param  array $token
-     * @param  int   $cursor checkAfterError
+     * @param  int $cursor checkAfterError
      *
-     * @return int   $result end code block
+     * @return int $result end code block
      */
     private function findCursorEndSunblock($token, $cursor) {
         // this line
@@ -235,7 +235,7 @@ class StyleOperatorEolsSniff implements Sniff
      * check is dream inside dream inside dream level three inside... fuck shut it!
      *
      * @param  array $token
-     * @param  int   $cursor
+     * @param  int $cursor
      *
      * @return bool   $result end code block
      */
