@@ -68,9 +68,8 @@ class StyleOperatorEolsSniff implements Sniff
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
         $cursor = $cursorBegin;
 
-        while ($tokens[$cursorBegin]['line'] > ($tokens[$cursor]['line'] - 1)) {
+        while (($tokens[$cursorBegin]['line'] - 1) <= ($tokens[$cursor]['line'])) {
             $cursor--;
-            $msg[] = var_export($tokens[$cursor]);
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
                 $msg[] = 'Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
                 $errorBeforeStatus = true;
@@ -79,20 +78,30 @@ class StyleOperatorEolsSniff implements Sniff
         
         }
         
-        $msg[] = var_export($tokens[$cursorBegin]);
-
-
         // check after error
         $errorAfterStatus = $this->checkAfterError($tokens, $stackPtr);
+        $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
 
         if ($errorAfterStatus) {
             $msg[] = 'Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));
         }
 
         $msg = implode("\r\n", $msg);
-        if ($errorBeforeStatus || $errorAfterStatus) {
+        if ($errorBeforeStatus || $errorAfterStatus) {    
             // create error
-            $phpcsFile->addError($msg, $stackPtr, 'Found');
+            $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found');
+
+            if ($fix === true) {
+                
+                if ($errorBeforeStatus) {
+                    $phpcsFile->fixer->addNewlineBefore($cursorBegin);
+                }
+
+                if ($errorAfterStatus) {
+                    $phpcsFile->fixer->addNewline($cursorEnd);   
+                }
+            }
+
         }
     
     }
@@ -239,7 +248,7 @@ class StyleOperatorEolsSniff implements Sniff
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
         $cursor = $cursorEnd;
 
-        while ($tokens[$cursorEnd]['line'] <= ($tokens[$cursor]['line'] + 1)) {
+        while (($tokens[$cursorEnd]['line']) >= $tokens[$cursor]['line']) {
             $cursor++;
             
             if (!isset($tokens[$cursor]['type'])) {
