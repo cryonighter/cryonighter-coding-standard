@@ -7,7 +7,6 @@
  * <code>
  * $var = 0 ;
  * </code>
- *
  */
 
 namespace Cryonighter\Sniffs\Classes;

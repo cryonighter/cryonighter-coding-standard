@@ -13,7 +13,6 @@
  *
  *   return false;
  * </code>
- *
  */
 
 namespace Cryonighter\Sniffs\Classes;

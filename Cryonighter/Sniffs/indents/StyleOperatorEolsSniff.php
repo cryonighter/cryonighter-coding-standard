@@ -14,7 +14,6 @@
  * }
  * $cursor--;
  * </code>
- *
  */
 
 namespace Cryonighter\Sniffs\Classes;
@@ -70,7 +69,8 @@ class StyleOperatorEolsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $errorBeforeStatus = false;
         $errorAfterStatus = false;
-        $msg[] = '"%s"';
+        $fix = false;
+        $msg[] = '';
         
         // check before error
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
@@ -80,38 +80,25 @@ class StyleOperatorEolsSniff implements Sniff
             $cursor--;
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $msg[] = 'Missing empty line found before;';
+                $msg[] = 'Missing empty line found before line:' . trim(nl2br($tokens[$cursorBegin]['line']));
                 $errorBeforeStatus = true;
                 break;
             }
         
         }
-
+        
         // check after error
-        $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
-        $cursor = $cursorEnd;
+        $errorAfterStatus = $this->checkAfterError($tokens, $stackPtr);
+        $errorAfterStatus = false;
 
-        while ($tokens[$cursorEnd]['line'] <= ($tokens[$cursor]['line'] + 1)) {
-            $cursor++;
-            
-            if (!isset($tokens[$cursor]['type'])) {
-                break;
-            }
-            
-            if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $msg[] = 'Missing empty line found after;';
-                $errorBeforeStatus = true;
-                break;
-            }
-        
+        if ($errorAfterStatus) {
+            $msg[] = 'Missing empty line found after line:' . trim(nl2br($tokens[$cursorEnd]['line']));
         }
 
-        // create error
         $msg = implode("\r\n", $msg);
-        $data[] = trim($tokens[$stackPtr]['content']);
         if ($errorBeforeStatus || $errorAfterStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found', $data);
-            // $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
+            // create error
+            $phpcsFile->addError($msg, $stackPtr, 'Found');
         }
     
     }
@@ -168,6 +155,7 @@ class StyleOperatorEolsSniff implements Sniff
             $result = $cursor;
         }
 
+        $result++;
         return $result;
     }
 
@@ -216,7 +204,7 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * check is dream inside dream inside dream level three inside... fuck shut it!
      * @param  array $token
-     * @param  int   $cursor
+     * @param  int   $cursor checkAfterError
      * @return int   $result end code block
      */
     private function findCursorEndSunblock($token, $cursor) {
@@ -237,6 +225,36 @@ class StyleOperatorEolsSniff implements Sniff
         }
 
         return $cursor;
+    }
+
+    /**
+     * check is dream inside dream inside dream level three inside... fuck shut it!
+     * @param  array $token
+     * @param  int   $cursor
+     * @return bool   $result end code block
+     */
+    private function checkAfterError($tokens, $stackPtr) {
+        // default result
+        $result = false;
+        $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
+        $cursor = $cursorEnd;
+
+        while ($tokens[$cursorEnd]['line'] <= ($tokens[$cursor]['line'] + 1)) {
+            $cursor++;
+            
+            if (!isset($tokens[$cursor]['type'])) {
+                break;
+            }
+            
+            if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
+                $result = true;
+                return $result;
+            }
+        
+        }
+
+        return $result;
+        
     }
 
 }
