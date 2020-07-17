@@ -2,7 +2,6 @@
 /**
  * This file errors example
  */
-<?php
 
 // function
 function functionExampleOne()
