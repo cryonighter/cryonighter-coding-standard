@@ -33,14 +33,6 @@ class StyleOperatorEolsSniff implements Sniff
     ];
 
     /**
-     * If TRUE, whitespace rules are not checked for blank lines.
-     * Blank lines are those that contain only whitespace.
-     *
-     * @var boolean
-     */
-    public $ignoreBlankLines = false;
-
-    /**
      * Returns the token types that this sniff is interested in.
      *
      * @return array
@@ -76,9 +68,9 @@ class StyleOperatorEolsSniff implements Sniff
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
         $cursor = $cursorBegin;
 
-        while ($tokens[$cursorBegin]['line'] >= ($tokens[$cursor]['line'] - 1)) {
+        while ($tokens[$cursorBegin]['line'] > ($tokens[$cursor]['line'] - 1)) {
             $cursor--;
-
+            $msg[] = var_export($tokens[$cursor]);
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
                 $msg[] = 'Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
                 $errorBeforeStatus = true;
@@ -87,9 +79,11 @@ class StyleOperatorEolsSniff implements Sniff
         
         }
         
+        $msg[] = var_export($tokens[$cursorBegin]);
+
+
         // check after error
         $errorAfterStatus = $this->checkAfterError($tokens, $stackPtr);
-        $errorAfterStatus = false;
 
         if ($errorAfterStatus) {
             $msg[] = 'Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));

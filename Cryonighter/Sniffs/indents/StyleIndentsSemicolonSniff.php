@@ -72,7 +72,6 @@ class StyleIndentsSemicolonSniff implements Sniff
 
         if ($errorStatus) {
             $data[] = trim($tokens[$stackPtr]['content']);
-            // $phpcsFile->addError($error, $stackPtr, 'Found', $data);
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
 
             if ($fix === true) {
