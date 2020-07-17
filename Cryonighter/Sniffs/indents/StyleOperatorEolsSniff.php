@@ -25,6 +25,7 @@ class StyleOperatorEolsSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
+     *
      * @var array
      */
     public $supportedTokenizers = [
@@ -34,12 +35,14 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * If TRUE, whitespace rules are not checked for blank lines.
      * Blank lines are those that contain only whitespace.
+     *
      * @var boolean
      */
     public $ignoreBlankLines = false;
 
     /**
      * Returns the token types that this sniff is interested in.
+     *
      * @return array(int)
      */
     public function register()
@@ -55,8 +58,10 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
-     * @param File $phpcsFile The file being scanned.
-     * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+     *
+     * @param File   $phpcsFile The file being scanned.
+     * @param int    $stackPtr  The position of the current token in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
@@ -75,7 +80,7 @@ class StyleOperatorEolsSniff implements Sniff
             $cursor--;
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $msg[] = 'Missing empty line found before line:' . trim(nl2br($tokens[$cursorBegin]['line']));
+                $msg[] = 'Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
                 $errorBeforeStatus = true;
                 break;
             }
@@ -87,7 +92,7 @@ class StyleOperatorEolsSniff implements Sniff
         $errorAfterStatus = false;
 
         if ($errorAfterStatus) {
-            $msg[] = 'Missing empty line found after line:' . trim(nl2br($tokens[$cursorEnd]['line']));
+            $msg[] = 'Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));
         }
 
         $msg = implode("\r\n", $msg);
@@ -101,6 +106,7 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * @param  array $token
      * @param  int   $cursor
+     *
      * @return int   $result begin code block
      */
     private function findCursorBegin($token, $cursor)
@@ -157,6 +163,7 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * @param  array $token
      * @param  int   $cursor
+     *
      * @return int   $result end code block
      */
     private function findCursorEnd($token, $cursor) {
@@ -198,8 +205,10 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * check is dream inside dream inside dream level three inside... fuck shut it!
+     *
      * @param  array $token
      * @param  int   $cursor checkAfterError
+     *
      * @return int   $result end code block
      */
     private function findCursorEndSunblock($token, $cursor) {
@@ -224,8 +233,10 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * check is dream inside dream inside dream level three inside... fuck shut it!
+     *
      * @param  array $token
      * @param  int   $cursor
+     *
      * @return bool   $result end code block
      */
     private function checkAfterError($tokens, $stackPtr) {

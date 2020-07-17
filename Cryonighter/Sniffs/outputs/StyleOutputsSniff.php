@@ -1,9 +1,7 @@
 <?php
 /**
  * This sniff prohibits the use of Perl style hash comments.
- *
  * An example of a hash comment is:
- *
  * <code>
  *   if ($i>1) {
  *       return true;
@@ -32,6 +30,7 @@ class StyleOutputsSniff implements Sniff
 
     /**
      * Returns the token types that this sniff is interested in.
+     *
      * @return array | int[]
      */
     public function register()
@@ -45,8 +44,10 @@ class StyleOutputsSniff implements Sniff
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
+     *
      * @param File $phpcsFile The file being scanned.
      * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
