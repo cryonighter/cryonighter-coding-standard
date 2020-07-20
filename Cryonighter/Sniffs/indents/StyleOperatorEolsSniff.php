@@ -99,9 +99,8 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
-     * @param  array $token
-     * @param  int   $cursor
-     *
+     * @param array  $token
+     * @param int    $cursor
      * @return int   $result begin code block
      */
     private function findCursorBegin($token, $cursor)
@@ -116,6 +115,7 @@ class StyleOperatorEolsSniff implements Sniff
         }
 
         // long comment block
+
         if ($token[$cursor - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
             $cursor--;
 
@@ -141,9 +141,8 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
-     * @param  array $token
-     * @param  int   $cursor
-     *
+     * @param array  $token
+     * @param int    $cursor
      * @return int   $result end code block
      */
     private function findCursorEnd($token, $cursor) {
@@ -183,9 +182,8 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * find after block error
-     * @param  array $token
-     * @param  int   $cursor
-     *
+     * @param array $token
+     * @param int   $cursor
      * @return bool  $result end code block
      */
     private function checkAfterError($tokens, $stackPtr) {
@@ -221,9 +219,8 @@ class StyleOperatorEolsSniff implements Sniff
 
     /**
      * find after block error
-     * @param  array $token
-     * @param  int   $cursor
-     *
+     * @param array $token
+     * @param int   $cursor
      * @return bool  $result end code block
      */
     private function checkBeforeError($tokens, $stackPtr) {

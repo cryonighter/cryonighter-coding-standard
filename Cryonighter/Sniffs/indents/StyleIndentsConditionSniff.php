@@ -54,10 +54,29 @@ class StyleIndentsConditionSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Operator ariphmetic in condition;';
+        $msg = 'Whitespace found before semicolon "%s" symbol;';
+        // token cursor
+        $cursor = $stackPtr;
+        
+        while ($tokens[$cursor]['type'] != 'T_OPEN_CURLY_BRACKET') {
+            $debug[] = var_export($tokens[$cursor], true);
+            $cursor++;
+        }
+        
+
+        // debug
+        $debug[] = '';
+        $debug = implode("\r\n---------------\r\n", $debug);
+
+
+
+
+
+
         if ($errorStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found');
+            $phpcsFile->addError($debug, $stackPtr, 'Found');
         }
     }
 }
