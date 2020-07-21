@@ -54,7 +54,6 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
-     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
@@ -99,9 +98,9 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
-     * @param array  $token
-     * @param int    $cursor
-     * @return int   $result begin code block
+     * @param array $token
+     * @param int   $cursor
+     * @return int $result begin code block
      */
     private function findCursorBegin($token, $cursor)
     {
@@ -184,7 +183,7 @@ class StyleOperatorEolsSniff implements Sniff
      * find after block error
      * @param array $token
      * @param int   $cursor
-     * @return bool  $result end code block
+     * @return bool $result end code block
      */
     private function checkAfterError($tokens, $stackPtr) {
         // default result
@@ -221,7 +220,7 @@ class StyleOperatorEolsSniff implements Sniff
      * find after block error
      * @param array $token
      * @param int   $cursor
-     * @return bool  $result end code block
+     * @return bool $result end code block
      */
     private function checkBeforeError($tokens, $stackPtr) {
         // default result
