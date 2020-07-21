@@ -109,6 +109,10 @@ class StyleOperatorEolsSniff implements Sniff
         // first <-- token
         $cursor--;
 
+        if ($token[$result]['column'] > 1) {
+            $cursor--;
+        }
+
         if ($token[$cursor]['type'] == 'T_COMMENT') {
             $result = $cursor;
         }

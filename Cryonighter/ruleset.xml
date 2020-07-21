@@ -116,6 +116,11 @@
         <severity>0</severity>
     </rule>
 
+    <!-- Уставливаем собственные правила переноса строк -->
+    <rule ref="Squiz.WhiteSpace.ControlStructureSpacing">
+        <severity>0</severity>
+    </rule>
+
     <!-- Устанавливаем по одному пробелу между символом конкатенации -->
     <rule ref="Squiz.Strings.ConcatenationSpacing">
         <properties>
