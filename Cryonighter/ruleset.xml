@@ -116,8 +116,18 @@
         <severity>0</severity>
     </rule>
 
-    <!-- Уставливаем собственные правила переноса строк -->
+    <!-- Уставливаем собственные правила переноса строк 1 -->
     <rule ref="Squiz.WhiteSpace.ControlStructureSpacing">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Уставливаем собственные правила переноса строк 2 -->
+    <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Уставливаем собственные правила переноса строк 3 -->
+    <rule ref="PSR2.Methods.FunctionClosingBrace">
         <severity>0</severity>
     </rule>
 

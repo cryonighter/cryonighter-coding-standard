@@ -54,15 +54,16 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int  $stackPtr  The position of the current token in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $msg[] = '';        
+        $msg[] = '';
         // check before error
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
-        $errorBeforeStatus = $this->checkBeforeError($tokens, $stackPtr);        
+        $errorBeforeStatus = $this->checkBeforeError($tokens, $stackPtr);
         // check after error
         $errorAfterStatus = $this->checkAfterError($tokens, $stackPtr);
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
@@ -75,16 +76,6 @@ class StyleOperatorEolsSniff implements Sniff
             $msg['before'] = 'Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
         }
 
-        if ($errorBeforeStatus) {
-            // create error
-            $fixBefore = $phpcsFile->addFixableError($msg['before'], $stackPtr, 'Found');
-
-            if ($fixBefore === true) {
-                $phpcsFile->fixer->addNewlineBefore($cursorBegin);
-            }
-
-        }
-
         if ($errorAfterStatus) {
             // create error
             $fixAfter = $phpcsFile->addFixableError($msg['after'], $stackPtr, 'Found');
@@ -94,17 +85,30 @@ class StyleOperatorEolsSniff implements Sniff
             }
 
         }
-    
+
+        if ($errorBeforeStatus) {
+            // create error
+            $fixBefore = $phpcsFile->addFixableError($msg['before'], $stackPtr, 'Found');
+            $errorStatusUpdate = $this->lineUpIsEmpty($tokens, $cursorBegin);
+            
+            if ($fixBefore === true && !$errorStatusUpdate) {
+
+                $phpcsFile->fixer->addNewlineBefore($cursorBegin);
+            }
+
+        }
+
     }
 
     /**
+     * Finding first block token
+     *
      * @param array $token
      * @param int   $cursor
-     * @return int $result begin code block
+     *
+     * @return int
      */
-    private function findCursorBegin($token, $cursor)
-    {
-        // result
+    private function findCursorBegin($token, $cursor) {
         $result = $cursor;
         // first <-- token
         $cursor--;
@@ -118,7 +122,6 @@ class StyleOperatorEolsSniff implements Sniff
         }
 
         // long comment block
-
         if ($token[$cursor - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
             $cursor--;
 
@@ -144,13 +147,14 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
+     * Finding last block token
+     *
      * @param array  $token
      * @param int    $cursor
-     * @return int   $result end code block
+     *
+     * @return int
      */
     private function findCursorEnd($token, $cursor) {
-
-        // this line
         $fixLine = $token[$cursor]['line'];
         
         // code else and elseif blocks (T_IF)
@@ -184,13 +188,14 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
-     * find after block error
+     * Find after block error
+     *
      * @param array $token
      * @param int   $cursor
-     * @return bool $result end code block
+     *
+     * @return bool
      */
     private function checkAfterError($tokens, $stackPtr) {
-        // default result
         $result = false;
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
         $cursor = $cursorEnd;
@@ -221,13 +226,14 @@ class StyleOperatorEolsSniff implements Sniff
     }
 
     /**
-     * find after block error
+     * Find after block error
+     *
      * @param array $token
      * @param int   $cursor
-     * @return bool $result end code block
+     *
+     * @return bool
      */
     private function checkBeforeError($tokens, $stackPtr) {
-        // default result
         $result = false;
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
         $cursor = $cursorBegin;
@@ -243,5 +249,72 @@ class StyleOperatorEolsSniff implements Sniff
         }
 
         return $result;
-    }    
+    }
+
+    /**
+     * Check is empty line up
+     *
+     * @param array $token
+     * @param int   $cursor CursorBegin
+     *
+     * @return bool
+     */
+    private function lineUpIsEmpty($token, $cursor) {
+        $result = false;
+        $fixLine = $token[$cursor]['line'] - 1;
+        $exemptions = [
+            'T_SWITCH',
+            'T_WHILE',
+            'T_FOREACH',
+            'T_FOR',
+            'T_IF',
+            'T_ELSE',
+            'T_ELSEIF',
+        ];
+        $cursor--;
+
+        while ($token[$cursor]['type'] == 'T_WHITESPACE') {
+            $cursor--;
+        }
+
+        if ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+            return $result;
+        }
+
+        if ($token[$cursor]['line'] < $fixLine) {
+            return $result;
+        }
+
+        if (!isset($token[$cursor]['bracket_opener'])) {
+            return $result;
+        }
+
+        $cursor = $token[$cursor]['bracket_opener'] - 1;
+
+        while ($token[$cursor]['type'] == 'T_WHITESPACE') {
+            $cursor--;
+        }
+
+        if (in_array($token[$cursor]['type'], $exemptions)) {
+            $result = true;
+            
+            return $result;
+        }
+
+        if ($token[$cursor]['type'] != 'T_CLOSE_PARENTHESIS') {
+            return $result;
+        }
+
+        if (!isset($token[$cursor]['parenthesis_owner'])) {
+            return $result;
+        }
+
+        $cursor = $token[$cursor]['parenthesis_owner'];
+
+        if (in_array($token[$cursor]['type'], $exemptions)) {
+            $result = true;
+        }
+
+        return $result;
+    }
 }
