@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This sniff prohibits the use of Perl style hash comments.
  *
@@ -108,7 +109,8 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @return int
      */
-    private function findCursorBegin($token, $cursor) {
+    private function findCursorBegin($token, $cursor)
+    {
         $result = $cursor;
         // first <-- token
         $cursor--;
@@ -154,7 +156,8 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @return int
      */
-    private function findCursorEnd($token, $cursor) {
+    private function findCursorEnd($token, $cursor)
+    {
         $fixLine = $token[$cursor]['line'];
         
         // code else and elseif blocks (T_IF)
@@ -195,7 +198,8 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @return bool
      */
-    private function checkAfterError($tokens, $stackPtr) {
+    private function checkAfterError($tokens, $stackPtr)
+    {
         $result = false;
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
         $cursor = $cursorEnd;
@@ -216,24 +220,27 @@ class StyleOperatorEolsSniff implements Sniff
             }
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $result = true;
+                if ($tokens[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+                    $result = true;
+                }
+
                 break;
             }
-        
         }
 
         return $result;
     }
 
     /**
-     * Find after block error
+     * Find before block error
      *
      * @param array $token
      * @param int   $cursor
      *
      * @return bool
      */
-    private function checkBeforeError($tokens, $stackPtr) {
+    private function checkBeforeError($tokens, $stackPtr)
+    {
         $result = false;
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
         $cursor = $cursorBegin;
@@ -242,7 +249,10 @@ class StyleOperatorEolsSniff implements Sniff
             $cursor--;
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {
-                $result = true;
+                if ($tokens[$cursor]['type'] != 'T_OPEN_CURLY_BRACKET') {
+                    $result = true;
+                }
+                
                 break;
             }
         
@@ -259,7 +269,8 @@ class StyleOperatorEolsSniff implements Sniff
      *
      * @return bool
      */
-    private function lineUpIsEmpty($token, $cursor) {
+    private function lineUpIsEmpty($token, $cursor)
+    {
         $result = false;
         $fixLine = $token[$cursor]['line'] - 1;
         $exemptions = [
