@@ -117,7 +117,6 @@ class StyleOutputsSniff implements Sniff
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
 
             if ($fix === true) {
-
                 if ($errorType > 0) {
                     $phpcsFile->fixer->addNewlineBefore($stackPtr);
                 } else {
