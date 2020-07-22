@@ -92,7 +92,6 @@ class StyleOperatorEolsSniff implements Sniff
             $errorStatusUpdate = $this->lineUpIsEmpty($tokens, $cursorBegin);
             
             if ($fixBefore === true && !$errorStatusUpdate) {
-
                 $phpcsFile->fixer->addNewlineBefore($cursorBegin);
             }
         }
@@ -248,7 +247,6 @@ class StyleOperatorEolsSniff implements Sniff
                 
                 break;
             }
-        
         }
 
         return $result;
