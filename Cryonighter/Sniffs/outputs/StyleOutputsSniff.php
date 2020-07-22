@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This sniff prohibits the use of Perl style hash comments.
  * An example of a hash comment is:
@@ -22,6 +23,7 @@ class StyleOutputsSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
+     *
      * @var array
      */
     public $supportedTokenizers = [
@@ -69,10 +71,7 @@ class StyleOutputsSniff implements Sniff
         $emptyLines = 0;
 
         // find prev line
-        while (
-            in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT'])
-            || $tokenPrev['line'] >= $thisLine
-        ) {
+        while (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) || $tokenPrev['line'] >= $thisLine) {
             $tokenPrev = $tokens[$stackPtrPrev];
 
             if ($tokenPrev['type'] == 'T_COMMENT') {
@@ -81,15 +80,13 @@ class StyleOutputsSniff implements Sniff
 
             $tokenPrev = $tokens[$stackPtrPrev];
 
-            if (
-                in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT'])
-                && nl2br($tokenPrev['content']) != $tokenPrev['content']
-            ) {
+            if (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) && nl2br($tokenPrev['content']) != $tokenPrev['content']) {
                 $emptyLines++;
             }
 
             $stackPtrPrev--;
         }
+        
         // counting empty lines
         $emptyLines = $emptyLines - $i;
         // no space condition error
@@ -115,6 +112,7 @@ class StyleOutputsSniff implements Sniff
 
         // generate error output
         $data[] = trim($tokens[$stackPtr]['content']);
+
         if ($errorStatus) {
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
 

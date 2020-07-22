@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This sniff prohibits the use of Perl style hash comments.
  *
@@ -20,6 +21,7 @@ class StyleIndentsConditionSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
+     *
      * @var array
      */
     public $supportedTokenizers = [
@@ -27,14 +29,8 @@ class StyleIndentsConditionSniff implements Sniff
     ];
 
     /**
-     * If TRUE, whitespace rules are not checked for blank lines.
-     * Blank lines are those that contain only whitespace.
-     * @var boolean
-     */
-    public $ignoreBlankLines = false;
-
-    /**
      * Returns the token types that this sniff is interested in.
+     *
      * @return array
      */
     public function register()
@@ -56,27 +52,32 @@ class StyleIndentsConditionSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Whitespace found before semicolon "%s" symbol;';
+        $msg = 'Appropriation variable in condition;';
         // token cursor
         $cursor = $stackPtr;
         
-        while ($tokens[$cursor]['type'] != 'T_OPEN_CURLY_BRACKET') {
-            $debug[] = var_export($tokens[$cursor], true);
+        while ($tokens[$cursor]['type'] != 'T_OPEN_PARENTHESIS') {
             $cursor++;
         }
         
+        if (!isset($tokens[$cursor]['parenthesis_closer'])) {
+            return null;
+        }
 
-        // debug
-        $debug[] = '';
-        $debug = implode("\r\n---------------\r\n", $debug);
+        while ($tokens[$cursor]['type'] != 'T_CLOSE_PARENTHESIS') {
+            if (!isset($tokens[$cursor]['type'])) {
+                return null;
+            }
+            
+            $cursor++;
 
-
-
-
-
-
+            if ($tokens[$cursor]['type'] == 'T_EQUAL') {
+                $errorStatus = true;
+            }
+        }
+        
         if ($errorStatus) {
-            $phpcsFile->addError($debug, $stackPtr, 'Found');
+            $phpcsFile->addError($msg, $stackPtr, 'Found');
         }
     }
 }
