@@ -84,7 +84,6 @@ class StyleOperatorEolsSniff implements Sniff
             if ($fixAfter === true) {
                 $phpcsFile->fixer->addNewline($cursorEnd);
             }
-
         }
 
         if ($errorBeforeStatus) {
@@ -96,9 +95,7 @@ class StyleOperatorEolsSniff implements Sniff
 
                 $phpcsFile->fixer->addNewlineBefore($cursorBegin);
             }
-
         }
-
     }
 
     /**
@@ -162,7 +159,6 @@ class StyleOperatorEolsSniff implements Sniff
         
         // code else and elseif blocks (T_IF)
         while ($token[$cursor]['type'] != 'T_OPEN_CURLY_BRACKET') {
-
             if (!isset($token[$cursor + 1]['type'])) {
                 break;
             }
@@ -172,19 +168,16 @@ class StyleOperatorEolsSniff implements Sniff
             if ($token[$cursor]['line'] > $fixLine) {
                 break;
             }
-            
         }
 
         if (isset($token[$cursor]['bracket_closer'])) {
             $cursor = $token[$cursor]['bracket_closer'];
             $cursor = $this->findCursorEnd($token, $cursor);
         } else {
-
             // rollback
             while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
                 $cursor--;
             }
-
         }
         
         return $cursor;
