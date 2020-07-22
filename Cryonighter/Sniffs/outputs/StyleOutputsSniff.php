@@ -116,7 +116,6 @@ class StyleOutputsSniff implements Sniff
         if ($errorStatus) {
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
 
-            // fix problems
             if ($fix === true) {
 
                 if ($errorType > 0) {
