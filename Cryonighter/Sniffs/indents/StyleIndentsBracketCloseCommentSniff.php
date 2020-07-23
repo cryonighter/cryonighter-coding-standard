@@ -36,13 +36,14 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
     public function register()
     {
         return [
-            T_CLOSE_CURLY_BRACKET,
             T_OPEN_CURLY_BRACKET,
             T_OPEN_PARENTHESIS,
-            T_CLOSE_PARENTHESIS,
             T_OPEN_SQUARE_BRACKET,
+            T_OPEN_SHORT_ARRAY,
+            T_CLOSE_CURLY_BRACKET,
+            T_CLOSE_PARENTHESIS,
             T_CLOSE_SQUARE_BRACKET,
-
+            T_CLOSE_SHORT_ARRAY,
         ];
     }
 
@@ -58,7 +59,7 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Found COMMENT in closed bracket line;';
+        $msg = 'Found COMMENT in bracket line;';
         // token cursor
         $cursor = $stackPtr;
         // fix line
@@ -69,6 +70,17 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
             'T_DOC_COMMENT_STRING',
             'T_DOC_COMMENT_CLOSE_TAG',
         ];
+        $tagets = [
+            'T_OPEN_CURLY_BRACKET',
+            'T_OPEN_PARENTHESIS',
+            'T_OPEN_SQUARE_BRACKET',
+            'T_OPEN_SHORT_ARRAY',
+            'T_CLOSE_CURLY_BRACKET',
+            'T_CLOSE_PARENTHESIS',
+            'T_CLOSE_SQUARE_BRACKET',
+            'T_CLOSE_SHORT_ARRAY',
+        ];
+        $i = 0;
 
         while (($tokens[$stackPtr]['line'] + 1) >= $tokens[$cursor]['line']) {
             $cursor++;
@@ -80,9 +92,15 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
             if ($tokens[$cursor]['line'] > $fixLine) {
                 break;
             }
+            
+            if (in_array($tokens[$cursor]['type'], $tagets)) {
+                $i++;
+            }
 
             if (in_array($tokens[$cursor]['type'], $commentTags)) {
-                $errorStatus = true;
+                if ($i < 1) {
+                    $errorStatus = true;
+                }
             }
         }
         
