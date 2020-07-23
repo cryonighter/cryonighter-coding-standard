@@ -6,13 +6,37 @@
  * An example of a hash comment is:
  *
  * <code>
- * if ($a == true) {
- *    return true;
- * } // comment
+ *
+ * This file errors example
+ *
+ * @api example
+ * @author example
+ * @category example
+ * @copyright example
+ * @example example
+ * @filesource example
+ * @global example
+ * @ignore example
+ * @internal example
+ * @license example
+ * @link example
+ * @method example
+ * @package example
+ * @since example
+ * @source example
+ * @subpackage example
+ * @uses example
+ * @used-by example
+ * @version example
+ *
+ * @param float $a
+ *
+ * @return bool
+ * 
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Classes;
+namespace Cryonighter\Sniffs\indents;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

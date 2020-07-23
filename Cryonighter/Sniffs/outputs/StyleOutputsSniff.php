@@ -14,7 +14,7 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Classes;
+namespace Cryonighter\Sniffs\outputs;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

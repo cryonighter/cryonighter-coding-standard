@@ -18,7 +18,7 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Classes;
+namespace Cryonighter\Sniffs\indents;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
