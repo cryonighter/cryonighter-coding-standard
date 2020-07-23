@@ -35,9 +35,9 @@ class StyleIndentsConditionSniff implements Sniff
      */
     public function register()
     {
-        $tokens[] = T_IF;
-
-        return $tokens;
+        return [
+            T_IF,
+        ];
     }
 
     /**

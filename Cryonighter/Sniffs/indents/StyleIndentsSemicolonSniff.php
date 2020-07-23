@@ -39,9 +39,9 @@ class StyleIndentsSemicolonSniff implements Sniff
      */
     public function register()
     {
-        $tokens[] = T_SEMICOLON;
-
-        return $tokens;
+        return [
+            T_SEMICOLON,
+        ];
     }
 
     /**
