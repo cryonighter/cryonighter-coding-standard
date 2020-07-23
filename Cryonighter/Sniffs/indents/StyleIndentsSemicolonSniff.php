@@ -25,14 +25,6 @@ class StyleIndentsSemicolonSniff implements Sniff
     ];
 
     /**
-     * If TRUE, whitespace rules are not checked for blank lines.
-     * Blank lines are those that contain only whitespace.
-     *
-     * @var bool
-     */
-    public $ignoreBlankLines = false;
-
-    /**
      * Returns the token types that this sniff is interested in.
      *
      * @return array
