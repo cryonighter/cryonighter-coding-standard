@@ -70,7 +70,7 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
             'T_DOC_COMMENT_STRING',
             'T_DOC_COMMENT_CLOSE_TAG',
         ];
-        $tagets = [
+        $targets = [
             'T_OPEN_CURLY_BRACKET',
             'T_OPEN_PARENTHESIS',
             'T_OPEN_SQUARE_BRACKET',
@@ -93,7 +93,7 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
                 break;
             }
             
-            if (in_array($tokens[$cursor]['type'], $tagets)) {
+            if (in_array($tokens[$cursor]['type'], $targets)) {
                 $i++;
             }
 
