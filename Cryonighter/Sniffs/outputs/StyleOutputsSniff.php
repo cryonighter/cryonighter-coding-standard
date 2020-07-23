@@ -37,9 +37,11 @@ class StyleOutputsSniff implements Sniff
      */
     public function register()
     {
-        $tokens[] = T_RETURN;
-        $tokens[] = T_YIELD;
-        $tokens[] = T_THROW;
+        $tokens = [
+            T_RETURN,
+            T_YIELD,
+            T_THROW,
+        ];
 
         return $tokens;
     }

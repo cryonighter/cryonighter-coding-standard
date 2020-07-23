@@ -41,11 +41,13 @@ class StyleOperatorEolsSniff implements Sniff
      */
     public function register()
     {
-        $tokens[] = T_SWITCH;
-        $tokens[] = T_IF;
-        $tokens[] = T_WHILE;
-        $tokens[] = T_FOREACH;
-        $tokens[] = T_FOR;
+        $tokens = [
+            T_SWITCH,
+            T_IF,
+            T_WHILE,
+            T_FOREACH,
+            T_FOR,
+        ];
 
         return $tokens;
     }
