@@ -37,6 +37,12 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
     {
         return [
             T_CLOSE_CURLY_BRACKET,
+            T_OPEN_CURLY_BRACKET,
+            T_OPEN_PARENTHESIS,
+            T_CLOSE_PARENTHESIS,
+            T_OPEN_SQUARE_BRACKET,
+            T_CLOSE_SQUARE_BRACKET,
+
         ];
     }
 
