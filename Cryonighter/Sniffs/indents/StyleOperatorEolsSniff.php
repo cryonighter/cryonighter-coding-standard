@@ -185,8 +185,8 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * Find after block error
      *
-     * @param array $token
-     * @param int   $cursor
+     * @param array $tokens
+     * @param int   $stackPtr
      *
      * @return bool
      */
@@ -226,8 +226,8 @@ class StyleOperatorEolsSniff implements Sniff
     /**
      * Find before block error
      *
-     * @param array $token
-     * @param int   $cursor
+     * @param array $tokens
+     * @param int   $stackPtr
      *
      * @return bool
      */
