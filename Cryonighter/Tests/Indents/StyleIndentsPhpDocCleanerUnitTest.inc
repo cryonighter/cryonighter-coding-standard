@@ -9,6 +9,7 @@
  * @copyright example
  * @example example
  * @filesource example
+ * @param float $a
  * @global example
  * @ignore example
  * @internal example
@@ -17,14 +18,13 @@
  * @method example
  * @package example
  * @since example
+ * @return bool
  * @source example
  * @subpackage example
  * @uses example example example
  *                 exaple examle
  * @used-by example
  * @version example
- * @param float $a
- * @return bool
  */
 
 $a = rand(0, 1);

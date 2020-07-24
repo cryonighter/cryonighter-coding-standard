@@ -36,7 +36,7 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Indents;
+namespace Cryonighter\Sniffs\indents;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -100,14 +100,71 @@ class StyleIndentsPhpDocCleanerSniff implements Sniff
             '@used-by',
             '@version',
         ];
+        $endTags = [
+            'T_DOC_COMMENT_CLOSE_TAG',
+            'T_DOC_COMMENT_TAG',
+        ];
 
         if (in_array($tokens[$cursor]['content'], $tagsIncorrect)) {
             $msg = $msg . $tokens[$cursor]['content'] . '"';
             $errorStatus = true;
         }
-
+        
         if ($errorStatus) {
-            $phpcsFile->addError($msg, $stackPtr, 'Found');
+            $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found');
+
+            if ($fix === true) {
+                $cursor++;
+
+                while (!in_array($tokens[$cursor]['type'], $endTags)) {
+                    if (!isset($tokens[$cursor]['type'])) {
+                        break;
+                    }
+                    $cursor++;
+                }
+
+                if (!isset($tokens[$cursor]['type'])) {
+                    return null;
+                }
+
+                while ($tokens[$cursor]['type'] != 'T_DOC_COMMENT_STRING') {
+                    if (!isset($tokens[$cursor]['type'])) {
+                        break;
+                    }
+                    $cursor--;
+                }
+
+                if (!isset($tokens[$cursor]['type'])) {
+                    return null;
+                }
+                
+                $cursorEnd = $cursor;
+                // find start pos broken block
+                $cursor = $stackPtr;
+
+                while ($tokens[$cursor]['content'] == nl2br($tokens[$cursor]['content'])) {
+                    if (!isset($tokens[$cursor]['type'])) {
+                        break;
+                    }
+                    $cursor--;
+                }
+
+                if (!isset($tokens[$cursor]['type'])) {
+                    return null;
+                }
+
+                $cursorStr = $cursor;
+                // delete broken block
+                $phpcsFile->fixer->beginChangeset();
+                $cursor = $cursorEnd;
+
+                while ($cursor > $cursorStr - 1) {
+                    $phpcsFile->fixer->replaceToken($cursor, '');
+                    $cursor--;
+                }
+
+                $phpcsFile->fixer->endChangeset();                
+            }
         }
     }
 }

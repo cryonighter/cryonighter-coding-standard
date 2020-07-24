@@ -4,7 +4,6 @@
  * This file errors example
  *
  * @param float $a
- *
  * @return bool
  */
 
