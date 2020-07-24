@@ -1,6 +1,6 @@
 <?php
 
-namespace Cryonighter\Tests\Classes;
+namespace Cryonighter\Tests\outputs;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
