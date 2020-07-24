@@ -12,7 +12,7 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\indents;
+namespace Cryonighter\Sniffs\Indents;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

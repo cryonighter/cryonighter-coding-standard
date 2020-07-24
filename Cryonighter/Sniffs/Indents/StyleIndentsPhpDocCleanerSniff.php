@@ -36,7 +36,7 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\indents;
+namespace Cryonighter\Sniffs\Indents;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -105,7 +105,7 @@ class StyleIndentsPhpDocCleanerSniff implements Sniff
             $msg = $msg . $tokens[$cursor]['content'] . '"';
             $errorStatus = true;
         }
-        
+
         if ($errorStatus) {
             $phpcsFile->addError($msg, $stackPtr, 'Found');
         }

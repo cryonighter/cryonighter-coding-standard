@@ -1,6 +1,6 @@
 <?php
 
-namespace Cryonighter\Tests\indents;
+namespace Cryonighter\Tests\Indents;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
