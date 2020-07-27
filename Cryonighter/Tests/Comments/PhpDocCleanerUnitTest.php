@@ -1,6 +1,6 @@
 <?php
 
-namespace Cryonighter\Tests\Indents;
+namespace Cryonighter\Tests\Comments;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
@@ -9,7 +9,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * A sniff unit test checks a .inc file for expected violations of a single
  * coding standard. Expected errors and warnings are stored in this class.
  */
-class StyleIndentsPhpDocCleanerUnitTest extends AbstractSniffUnitTest
+class PhpDocCleanerUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

@@ -13,7 +13,7 @@ namespace Cryonighter\Sniffs\Indents;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class StyleIndentsSemicolonSniff implements Sniff
+class SemicolonSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -48,7 +48,7 @@ class StyleIndentsSemicolonSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Whitespace found before semicolon "%s" symbol;';
+        $msg = 'Indents. Found before semicolon "%s" symbol;';
         // token cursor
         $cursor = $stackPtr - 1;
         $exemptions = [

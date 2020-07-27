@@ -36,12 +36,12 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Indents;
+namespace Cryonighter\Sniffs\Comments;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class StyleIndentsBracketCloseCommentSniff implements Sniff
+class BracketCloseCommentSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -83,7 +83,7 @@ class StyleIndentsBracketCloseCommentSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Found COMMENT in bracket line;';
+        $msg = 'Comments. Found in bracket line;';
         // token cursor
         $cursor = $stackPtr;
         // fix line

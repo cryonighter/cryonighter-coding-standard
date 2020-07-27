@@ -18,12 +18,12 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Indents;
+namespace Cryonighter\Sniffs\LineBreaks;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class StyleOperatorEolsSniff implements Sniff
+class OperatorEolsSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -70,11 +70,11 @@ class StyleOperatorEolsSniff implements Sniff
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
         
         if ($errorAfterStatus) {
-            $msg['after'] = 'Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));
+            $msg['after'] = 'LineBreaks. Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));
         }
 
         if ($errorBeforeStatus) {
-            $msg['before'] = 'Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
+            $msg['before'] = 'LineBreaks. Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
         }
 
         if ($errorAfterStatus) {
@@ -175,6 +175,10 @@ class StyleOperatorEolsSniff implements Sniff
         } else {
             // rollback
             while ($token[$cursor]['type'] != 'T_CLOSE_CURLY_BRACKET') {
+                if (!isset($token[$cursor - 1]['type'])) {
+                    break;
+                }
+
                 $cursor--;
             }
         }

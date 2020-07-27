@@ -14,12 +14,12 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\Outputs;
+namespace Cryonighter\Sniffs\LineBreaks;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class StyleOutputsSniff implements Sniff
+class ReturnEmptyLineBeforeSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -98,14 +98,14 @@ class StyleOutputsSniff implements Sniff
 
         if ($spaceLineSize < 2 && $tokenPrev['type'] != 'T_OPEN_CURLY_BRACKET') {
             // no empty line translation exception
-            $msg = 'Missing empty line found before "%s";';
+            $msg = 'LineBreaks. Missing empty line found before "%s";';
             $errorType = 1;
             $errorStatus = true;
         }
 
         // Excess empty line translation exception
         if ($spaceLineSize > 1 && $tokenPrev['type'] == 'T_OPEN_CURLY_BRACKET') {
-            $msg = 'Excess empty line found before "%s";';
+            $msg = 'LineBreaks. Excess empty line found before "%s";';
             $errorType = -1;
             $errorStatus = true;
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cryonighter\Tests\Outputs;
+namespace Cryonighter\Tests\LineBreaks;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
@@ -9,7 +9,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  * A sniff unit test checks a .inc file for expected violations of a single
  * coding standard. Expected errors and warnings are stored in this class.
  */
-class StyleOutputsUnitTest extends AbstractSniffUnitTest
+class OperatorEolsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -20,10 +20,7 @@ class StyleOutputsUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return [
-            78  => 1,
-            483  => 1,
-        ];
+        return [];
     }
 
     /**

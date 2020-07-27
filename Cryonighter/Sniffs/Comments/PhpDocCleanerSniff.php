@@ -36,12 +36,12 @@
  * </code>
  */
 
-namespace Cryonighter\Sniffs\indents;
+namespace Cryonighter\Sniffs\Comments;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class StyleIndentsPhpDocCleanerSniff implements Sniff
+class PhpDocCleanerSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -76,7 +76,7 @@ class StyleIndentsPhpDocCleanerSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $errorStatus = false;
-        $msg = 'Incorrect parameter in PhpDoc - "';
+        $msg = 'Comments. Incorrect parameter in PhpDoc - "';
         // token cursor
         $cursor = $stackPtr;
         $tagsIncorrect = [
