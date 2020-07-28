@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This sniff prohibits the use of Perl style hash comments.
+ * This sniff finding assignment in condition parenthesis spacing.
  *
  * An example of a hash comment is:
  *
