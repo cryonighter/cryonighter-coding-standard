@@ -9,30 +9,11 @@
  *
  * This file errors example
  *
- * @api example
- * @author example
- * @category example
- * @copyright example
- * @example example
- * @filesource example
- * @global example
- * @ignore example
- * @internal example
- * @license example
- * @link example
- * @method example
- * @package example
- * @since example
- * @source example
- * @subpackage example
- * @uses example
- * @used-by example
- * @version example
  *
  * @param float $a
  *
  * @return bool
- * 
+ *
  * </code>
  */
 
@@ -117,9 +98,10 @@ class PhpDocCleanerSniff implements Sniff
                 $cursor++;
 
                 while (!in_array($tokens[$cursor]['type'], $endTags)) {
-                    if (!isset($tokens[$cursor]['type'])) {
+                    if (!isset($tokens[$cursor]['content'])) {
                         break;
                     }
+
                     $cursor++;
                 }
 
@@ -128,9 +110,10 @@ class PhpDocCleanerSniff implements Sniff
                 }
 
                 while ($tokens[$cursor]['type'] != 'T_DOC_COMMENT_STRING') {
-                    if (!isset($tokens[$cursor]['type'])) {
+                    if (!isset($tokens[$cursor]['content'])) {
                         break;
                     }
+
                     $cursor--;
                 }
 
@@ -143,9 +126,10 @@ class PhpDocCleanerSniff implements Sniff
                 $cursor = $stackPtr;
 
                 while ($tokens[$cursor]['content'] == nl2br($tokens[$cursor]['content'])) {
-                    if (!isset($tokens[$cursor]['type'])) {
+                    if (!isset($tokens[$cursor]['content'])) {
                         break;
                     }
+
                     $cursor--;
                 }
 
@@ -163,7 +147,7 @@ class PhpDocCleanerSniff implements Sniff
                     $cursor--;
                 }
 
-                $phpcsFile->fixer->endChangeset();                
+                $phpcsFile->fixer->endChangeset();
             }
         }
     }

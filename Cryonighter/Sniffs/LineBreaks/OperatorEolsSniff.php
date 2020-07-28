@@ -135,6 +135,10 @@ class OperatorEolsSniff implements Sniff
             $cursor--;
 
             while (stripos($token[$cursor]['content'], '/*') === false) {
+                if (!isset($token[$cursor]['content'])) {
+                    break;
+                }
+                
                 $cursor--;
             }
 
@@ -201,11 +205,11 @@ class OperatorEolsSniff implements Sniff
         $cursor = $cursorEnd;
 
         while (($tokens[$cursorEnd]['line'] + 1) >= $tokens[$cursor]['line']) {
-            $cursor++;
-            
-            if (!isset($tokens[$cursor]['type'])) {
+            if (!isset($tokens[$cursor]['content'])) {
                 break;
             }
+            
+            $cursor++;
             
             if (($tokens[$cursorEnd]['line']) == $tokens[$cursor]['line']) {
                 continue;
@@ -242,6 +246,10 @@ class OperatorEolsSniff implements Sniff
         $cursor = $cursorBegin;
 
         while (($tokens[$cursorBegin]['line'] - 1) <= ($tokens[$cursor]['line'])) {
+            if (!isset($tokens[$cursor]['content'])) {
+                break;
+            }
+            
             $cursor--;
 
             if ($tokens[$cursor]['type'] != 'T_WHITESPACE') {

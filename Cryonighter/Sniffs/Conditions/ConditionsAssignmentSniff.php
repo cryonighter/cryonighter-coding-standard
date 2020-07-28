@@ -2,14 +2,13 @@
 
 /**
  * This sniff prohibits the use of Perl style hash comments.
+ *
  * An example of a hash comment is:
+ *
  * <code>
- *   if (
- *       empty($a) ||
- *       empty($b)
- *   ) {
- *       echo 'Hello';
- *   }
+ * if ($a = rand(0, 1)) {
+ *    return true;
+ * }
  * </code>
  */
 
@@ -18,7 +17,7 @@ namespace Cryonighter\Sniffs\Conditions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class BodyInOneLineSniff implements Sniff
+class ConditionsAssignmentSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -38,9 +37,6 @@ class BodyInOneLineSniff implements Sniff
     {
         return [
             T_IF,
-            T_ELSEIF,
-            T_DO,
-            T_WHILE,
         ];
     }
 
@@ -54,7 +50,34 @@ class BodyInOneLineSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        // code...
-        return null;
+        $tokens = $phpcsFile->getTokens();
+        $errorStatus = false;
+        $msg = 'Conditions. Appropriation variable;';
+        // token cursor
+        $cursor = $stackPtr;
+        
+        while ($tokens[$cursor]['type'] != 'T_OPEN_PARENTHESIS') {
+            $cursor++;
+        }
+        
+        if (!isset($tokens[$cursor]['parenthesis_closer'])) {
+            return null;
+        }
+
+        while ($tokens[$cursor]['type'] != 'T_CLOSE_PARENTHESIS') {
+            if (!isset($tokens[$cursor]['content'])) {
+                return null;
+            }
+            
+            $cursor++;
+
+            if ($tokens[$cursor]['type'] == 'T_EQUAL') {
+                $errorStatus = true;
+            }
+        }
+        
+        if ($errorStatus) {
+            $phpcsFile->addError($msg, $stackPtr, 'Found');
+        }
     }
 }
