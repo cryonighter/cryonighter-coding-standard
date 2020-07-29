@@ -1,8 +1,10 @@
 <?php
 
 /**
- * This sniff prohibits the use of Perl style hash comments.
- * An example of a hash comment is:
+ * This sniff find and fix spaces before semicolon
+ *
+ * example:
+ *
  * <code>
  * $var = 0 ;
  * </code>

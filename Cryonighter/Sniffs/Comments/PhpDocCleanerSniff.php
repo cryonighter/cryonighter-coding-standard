@@ -1,19 +1,12 @@
 <?php
 
 /**
- * This sniff prohibits the use of Perl style hash comments.
+ * This sniff find and fix invalid tags in PhpDoc
  *
  * An example of a hash comment is:
  *
  * <code>
- *
- * This file errors example
- *
- *
- * @param float $a
- *
- * @return bool
- *
+ * @ api api
  * </code>
  */
 
