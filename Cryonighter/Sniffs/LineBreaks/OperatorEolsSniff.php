@@ -75,11 +75,11 @@ class OperatorEolsSniff implements Sniff
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
         
         if ($errorAfterStatus) {
-            $msg['after'] = 'LineBreaks. Missing empty line found after line: ' . trim(nl2br($tokens[$cursorEnd]['line']));
+            $msg['after'] = 'LineBreaks. Missing empty line found after line: ' . trim($tokens[$cursorEnd]['line']);
         }
 
         if ($errorBeforeStatus) {
-            $msg['before'] = 'LineBreaks. Missing empty line found before line: ' . trim(nl2br($tokens[$cursorBegin]['line']));
+            $msg['before'] = 'LineBreaks. Missing empty line found before line: ' . trim($tokens[$cursorBegin]['line']);
         }
 
         if ($errorAfterStatus) {
