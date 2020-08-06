@@ -55,7 +55,7 @@ class AroundShortOperatorsSniff implements Sniff
 
         if (Tokens::$booleanOperators) {
             $targets += Tokens::$booleanOperators;
-        }                        
+        }
 
         return array_unique($targets);
     }

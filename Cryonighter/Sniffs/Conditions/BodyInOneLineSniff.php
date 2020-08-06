@@ -41,7 +41,6 @@ class BodyInOneLineSniff implements Sniff
         return [
             T_IF,
             T_ELSEIF,
-            T_DO,
             T_WHILE,
         ];
     }
@@ -102,7 +101,7 @@ class BodyInOneLineSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($cursor, '');
                     }
 
-                    if ($tokens[$cursor]['type'] == 'T_WHITESPACE' && mb_strlen($content) > 1) {
+                    if ($tokens[$cursor]['type'] == 'T_WHITESPACE' && $tokens[$cursor]['length'] > 1) {
                         $phpcsFile->fixer->replaceToken($cursor, ' ');
                     }
                     

@@ -63,8 +63,13 @@ class OperatorEolsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $msg[] = '';
         // check before error
-        $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
         $errorBeforeStatus = $this->checkBeforeError($tokens, $stackPtr);
+        $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
+        
+        if ($cursorBegin === false) {
+            $cursorBegin = $stackPtr;
+        }
+        
         // check after error
         $errorAfterStatus = $this->checkAfterError($tokens, $stackPtr);
         $cursorEnd = $this->findCursorEnd($tokens, $stackPtr);
@@ -103,7 +108,7 @@ class OperatorEolsSniff implements Sniff
      * @param array $token
      * @param int   $cursor
      *
-     * @return int
+     * @return int | bool
      */
     private function findCursorBegin($token, $cursor)
     {
@@ -114,9 +119,14 @@ class OperatorEolsSniff implements Sniff
         if ($token[$result]['column'] > 1) {
             $cursor--;
         }
-
+        
         if ($token[$cursor]['type'] == 'T_COMMENT') {
             $result = $cursor;
+        }
+        
+        // this token is begin sister block - not check
+        if ($token[$cursor]['type'] == 'T_CLOSE_CURLY_BRACKET') {
+            return false;
         }
 
         // long comment block
@@ -243,6 +253,11 @@ class OperatorEolsSniff implements Sniff
     {
         $result = false;
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
+
+        if ($cursorBegin === false) {
+            return $result;
+        }
+
         $cursor = $cursorBegin;
 
         while (($tokens[$cursorBegin]['line'] - 1) <= ($tokens[$cursor]['line'])) {
