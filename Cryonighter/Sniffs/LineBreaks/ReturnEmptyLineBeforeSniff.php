@@ -57,7 +57,7 @@ class ReturnEmptyLineBeforeSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
+        $token = $tokens[$stackPtr];
         $errorStatus = false;
         $errorType = 0;
         $msg = '';
@@ -66,7 +66,7 @@ class ReturnEmptyLineBeforeSniff implements Sniff
         // position token on prev line
         $stackPtrPrev = $stackPtr - 1;
         // token on prev line
-        $tokenPrev  = $tokens[$stackPtrPrev];
+        $tokenPrev = $tokens[$stackPtrPrev];
         // comment counting
         $i = 0;
         // counting empty lines
