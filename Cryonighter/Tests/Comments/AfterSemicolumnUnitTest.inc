@@ -14,7 +14,7 @@ comment
 
 if (empty($a)) {
     $b = true;
-} /**
+}/**
 comment
 */
 
@@ -28,4 +28,4 @@ if (empty($a)) {
 
 if (empty($a)) {
     $b = true;
-} # comment
+} // comment

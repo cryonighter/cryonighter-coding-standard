@@ -13,7 +13,6 @@ if (empty($a)) {
 /*
 comment
 */
-
 if (empty($a)) {
     $b = true;
 }
@@ -21,20 +20,17 @@ if (empty($a)) {
 /**
 comment
 */
-
 if (empty($a)) {
     $b = true;
 }
 
 // comment
 
-
 if (empty($a)) {
     $b = true;
 }
 
 // comment
-
 
 if (empty($a)) {
     $b = true;
