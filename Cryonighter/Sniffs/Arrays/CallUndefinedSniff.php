@@ -104,7 +104,6 @@ class CallUndefinedSniff implements Sniff
         $msg .= '"' . $arrayVariable . '";';
 
         if ($errorStatus) {
-            // $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found');
             $phpcsFile->addError($msg, $stackPtr, 'Found');
         }
     }
