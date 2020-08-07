@@ -66,6 +66,7 @@ class SemicolonSniff implements Sniff
         }
 
         if ($errorStatus) {
+            $data = [];
             $data[] = trim($tokens[$stackPtr]['content']);
             $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found', $data);
 

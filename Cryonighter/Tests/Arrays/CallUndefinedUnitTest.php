@@ -1,15 +1,15 @@
 <?php
 
-namespace Cryonighter\Tests\Comments;
+namespace Cryonighter\Tests\Arrays;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the PhpDocCleanerUnitTest sniff.
+ * Unit test class for the CallUndefined sniff.
  * A sniff unit test checks a .inc file for expected violations of a single
  * coding standard. Expected errors and warnings are stored in this class.
  */
-class PhpDocCleanerUnitTest extends AbstractSniffUnitTest
+class CallUndefinedUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

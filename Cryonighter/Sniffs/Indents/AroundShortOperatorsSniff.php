@@ -39,6 +39,9 @@ class AroundShortOperatorsSniff implements Sniff
             T_INLINE_ELSE,
             T_STRING_CONCAT,
             T_INSTANCEOF,
+            T_TRUE,
+            T_FALSE,
+            T_NULL,
         ];
 
         if (Tokens::$comparisonTokens) {
@@ -86,8 +89,10 @@ class AroundShortOperatorsSniff implements Sniff
         $errorStatusBefore = false;
         $errorStatusAfter = false;
         $tokenContent = $tokens[$stackPtr]['content'];
-        $msg['before'] = 'Indents. Misplaced spaces before "' . $tokenContent . '";';
-        $msg['after'] = 'Indents. Misplaced spaces after "' . $tokenContent . '";';
+        $msg = [
+            'Indents. Misplaced spaces before "' . $tokenContent . '";',
+            'Indents. Misplaced spaces after "' . $tokenContent . '";',
+        ];
         // token cursor
         $cursor = $stackPtr;
         

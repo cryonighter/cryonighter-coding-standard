@@ -113,6 +113,7 @@ class ReturnEmptyLineBeforeSniff implements Sniff
         }
 
         // generate error output
+        $data = [];
         $data[] = trim($tokens[$stackPtr]['content']);
 
         if ($errorStatus) {

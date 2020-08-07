@@ -19,6 +19,7 @@ namespace Cryonighter\Sniffs\Conditions;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 class BodyInOneLineSniff implements Sniff
 {
@@ -39,9 +40,11 @@ class BodyInOneLineSniff implements Sniff
     public function register()
     {
         return [
+            T_WHILE,
+            T_FOR,
+            T_FOREACH,
             T_IF,
             T_ELSEIF,
-            T_WHILE,
         ];
     }
 

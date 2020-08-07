@@ -52,10 +52,61 @@ class LotsOfSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         $msg = 'LineBreaks. More than one line-break';
+        $rules = [
+            'T_SWITCH',
+            'T_IF',
+            'T_WHILE',
+            'T_FOREACH',
+            'T_FOR',
+            'T_DOC_COMMENT_OPEN_TAG',
+            'T_RETURN',
+        ];
+        $classRules = [
+            'T_USE',
+            'T_NAMESPACE',
+            'T_CLASS',
+            'T_RETURN',
+        ];
         
         // skip not clean line
         if ($tokens[$stackPtr]['column'] > 1) {
-            return null;
+            if ($tokens[$stackPtr - 1]['type'] == 'T_CLOSE_CURLY_BRACKET') {
+                return null;
+            }
+
+            if ($tokens[$stackPtr - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
+                return null;
+            }
+
+            if (isset($tokens[$stackPtr + 2]['type'])) {
+                if (in_array($tokens[$stackPtr + 2]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($tokens[$stackPtr + 2]['type'])) {
+                if (in_array($tokens[$stackPtr + 2]['type'], $classRules)) {
+                    return null;
+                }
+            }
+
+            if (isset($tokens[$stackPtr + 3]['type'])) {
+                if (in_array($tokens[$stackPtr + 3]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($tokens[$stackPtr + 4]['type'])) {
+                if (in_array($tokens[$stackPtr + 4]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($tokens[$stackPtr + 5]['type'])) {
+                if (in_array($tokens[$stackPtr + 5]['type'], $rules)) {
+                    return null;
+                }
+            }
         }
 
         // skip one-line tokens

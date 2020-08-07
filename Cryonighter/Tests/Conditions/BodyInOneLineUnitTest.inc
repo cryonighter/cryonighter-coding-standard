@@ -13,3 +13,19 @@ if (
 ) {
     echo 'Hello';
 }
+
+while (
+    empty($a) ||
+    empty($b)
+) {
+    echo 'Hello';
+}
+
+for (
+    $i = 0;
+    $i < 0 ||
+    empty($a);
+    $i++
+) {
+    echo 'hello';
+}

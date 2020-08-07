@@ -61,7 +61,7 @@ class OperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $msg[] = '';
+        $msg = [];
         // check before error
         $errorBeforeStatus = $this->checkBeforeError($tokens, $stackPtr);
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
@@ -84,7 +84,7 @@ class OperatorEolsSniff implements Sniff
 
         if ($errorAfterStatus) {
             // create error
-            $fixAfter = $phpcsFile->addFixableError($msg['after'], $stackPtr, 'Found');
+            $fixAfter = $phpcsFile->addFixableError($msg['after'], $cursorEnd, 'Found');
 
             if ($fixAfter === true) {
                 $phpcsFile->fixer->addNewline($cursorEnd);
@@ -93,7 +93,7 @@ class OperatorEolsSniff implements Sniff
 
         if ($errorBeforeStatus) {
             // create error
-            $fixBefore = $phpcsFile->addFixableError($msg['before'], $stackPtr, 'Found');
+            $fixBefore = $phpcsFile->addFixableError($msg['before'], $cursorBegin, 'Found');
             $errorStatusUpdate = $this->lineUpIsEmpty($tokens, $cursorBegin);
             
             if ($fixBefore === true && !$errorStatusUpdate) {
@@ -255,6 +255,18 @@ class OperatorEolsSniff implements Sniff
         $cursorBegin = $this->findCursorBegin($tokens, $stackPtr);
 
         if ($cursorBegin === false) {
+            return $result;
+        }
+
+        $cursor = $cursorBegin;
+        // check before empty line
+        $cursor--;
+
+        if (!isset($tokens[$cursor]['content'])) {
+            return $result;
+        }
+
+        if ($tokens[$cursor]['type'] == 'T_WHITESPACE' && $tokens[$cursor]['column'] == 1) {
             return $result;
         }
 
