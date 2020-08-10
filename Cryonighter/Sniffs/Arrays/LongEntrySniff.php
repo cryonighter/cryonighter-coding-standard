@@ -50,7 +50,6 @@ class LongEntrySniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         // all tokens invalid
-        $errorStatus = true;
         $msg = 'Arrays. Allowed only short code;';
         $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found');
 
