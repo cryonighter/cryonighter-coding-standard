@@ -5,11 +5,11 @@ namespace Cryonighter\Tests\LineBreaks;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the CallMethodMultiLine sniff.
+ * Unit test class for the DescriptionClassesAndFunctions sniff.
  * A sniff unit test checks a .inc file for expected violations of a single
  * coding standard. Expected errors and warnings are stored in this class.
  */
-class CallMethodMultiLineUnitTest extends AbstractSniffUnitTest
+class DescriptionClassesAndFunctionsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
