@@ -161,8 +161,8 @@ class OperatorEolsSniff implements Sniff
     /**
      * Finding last block token
      *
-     * @param array  $token
-     * @param int    $cursor
+     * @param array $token
+     * @param int   $cursor
      *
      * @return int
      */
