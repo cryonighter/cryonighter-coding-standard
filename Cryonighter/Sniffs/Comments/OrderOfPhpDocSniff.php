@@ -171,10 +171,10 @@ class OrderOfPhpDocSniff implements Sniff
     /**
      * find start and end block coordinates
      *
-     * @param int        $cursor
-     * @param string     $closeBlockCondition A dot denoting the end of a block as a token content
-     * @param string     $closeBlockPreCondition A dot at which, having found which we expect the tag content to be closed
-     * @param bool|null  $afterLines Check lines before tag
+     * @param int       $cursor
+     * @param string    $closeBlockCondition A dot denoting the end of a block as a token content
+     * @param string    $closeBlockPreCondition A dot at which, having found which we expect the tag content to be closed
+     * @param bool|null $afterLines Check lines before tag
      *
      * @return array|null two elements start/end adress and content all block
      */
@@ -430,9 +430,9 @@ class OrderOfPhpDocSniff implements Sniff
      * We try to automatically resolve errors
      * Attention! One literation - One error - One solution. NO MORE!
      *
-     * @param boolean  $fix Variable describing the status of the error solution
-     * @param array    $commentTags - array with key tags
-     * @param int      $cursor
+     * @param boolean $fix Variable describing the status of the error solution
+     * @param array   $commentTags - array with key tags
+     * @param int     $cursor
      *
      * @return null    Early exit from the procedure
      */

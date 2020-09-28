@@ -153,8 +153,8 @@ class DrainsInEndPhpDocSniff implements Sniff
     /**
      * We try to automatically resolve errors
      *
-     * @param boolean  $fix Variable describing the status of the error solution
-     * @param int      $cursor
+     * @param boolean $fix Variable describing the status of the error solution
+     * @param int     $cursor
      *
      * @return null    Early exit from the procedure
      */

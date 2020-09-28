@@ -29,6 +29,13 @@ class ValidParamTagSniff implements Sniff
     private $phpcsFile = null;
 
     /**
+    * Array of tokens found in the scanned file
+    *
+    * @var array|null
+    */
+    private $tokens = null;
+
+    /**
      * The position of the current token in the stack passed in $tokens.
      *
      * @var int
