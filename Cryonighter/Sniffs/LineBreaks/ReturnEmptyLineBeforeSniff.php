@@ -69,6 +69,8 @@ class ReturnEmptyLineBeforeSniff implements Sniff
         $tokenPrev = $tokens[$stackPtrPrev];
         // comment counting
         $i = 0;
+        // comment before return
+        $cursor = $stackPtr;
         // counting empty lines
         $emptyLines = 0;
 
@@ -78,6 +80,7 @@ class ReturnEmptyLineBeforeSniff implements Sniff
 
             if ($tokenPrev['type'] == 'T_COMMENT') {
                 $i++;
+                $cursor = $stackPtrPrev;
             }
 
             $tokenPrev = $tokens[$stackPtrPrev];
@@ -89,6 +92,10 @@ class ReturnEmptyLineBeforeSniff implements Sniff
             $stackPtrPrev--;
         }
         
+        if ($tokens[$cursor - 1]['content'] === nl2br($tokens[$cursor - 1]['content'])) {
+            $cursor--;
+        }
+
         // counting empty lines
         $emptyLines = $emptyLines - $i;
         // no space condition error
@@ -121,7 +128,11 @@ class ReturnEmptyLineBeforeSniff implements Sniff
 
             if ($fix === true) {
                 if ($errorType > 0) {
-                    $phpcsFile->fixer->addNewlineBefore($stackPtr);
+                    $content = "\r\n" . $tokens[$cursor]['content'];
+                    $phpcsFile->fixer->beginChangeset();
+                    $phpcsFile->fixer->replaceToken($cursor, $content);
+                    $phpcsFile->fixer->endChangeset();
+                    // $phpcsFile->fixer->addNewlineBefore($cursor);
                 } else {
                     $phpcsFile->fixer->beginChangeset();
                     $target = $thisLine - $spaceLineSize;

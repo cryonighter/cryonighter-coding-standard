@@ -61,6 +61,7 @@ class OperatorEolsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+        $content = '';
         $msg = [];
         // check before error
         $errorBeforeStatus = $this->checkBeforeError($tokens, $stackPtr);
@@ -83,11 +84,18 @@ class OperatorEolsSniff implements Sniff
         }
 
         if ($errorAfterStatus) {
-            // create error
+            if ($tokens[$cursorEnd]['column'] > 1) {
+                $content = "\r\n" . $tokens[$cursorEnd - 1]['content'];
+                var_dump($tokens[$cursorEnd]['content'] . $content);
+            }
+
             $fixAfter = $phpcsFile->addFixableError($msg['after'], $cursorEnd, 'Found');
 
             if ($fixAfter === true) {
-                $phpcsFile->fixer->addNewline($cursorEnd);
+                $content = $tokens[$cursorEnd]['content'] . $content;
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->replaceToken($cursorEnd, $content);
+                $phpcsFile->fixer->endChangeset();
             }
         }
 

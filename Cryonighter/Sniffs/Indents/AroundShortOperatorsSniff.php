@@ -90,8 +90,8 @@ class AroundShortOperatorsSniff implements Sniff
         $errorStatusAfter = false;
         $tokenContent = $tokens[$stackPtr]['content'];
         $msg = [
-            'Indents. Misplaced spaces before "' . $tokenContent . '";',
-            'Indents. Misplaced spaces after "' . $tokenContent . '";',
+            'before' => 'Indents. Misplaced spaces before "' . $tokenContent . '";',
+            'after' => 'Indents. Misplaced spaces after "' . $tokenContent . '";',
         ];
         // token cursor
         $cursor = $stackPtr;

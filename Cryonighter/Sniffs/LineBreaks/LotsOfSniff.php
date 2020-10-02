@@ -149,7 +149,7 @@ class LotsOfSniff implements Sniff
             $cursor++;
             $phpcsFile->fixer->beginChangeset();
 
-            while ($tokens[$cursor]['type'] == 'T_WHITESPACE') {
+            while ($tokens[$cursor]['type'] == 'T_WHITESPACE' && $tokens[$cursor]['content'] !== nl2br($tokens[$cursor]['content'])) {
                 if (!isset($tokens[$cursor]['content'])) {
                     break;
                 }

@@ -36,7 +36,7 @@ class OrderOfPhpDocSniff implements Sniff
      * The position of the current token in the stack passed in $tokens.
      * @var int
      */
-    private $stackPtr = 1;
+    private $stackPtr = 0;
 
     /**
     * Array of tokens found in the scanned file
@@ -207,7 +207,7 @@ class OrderOfPhpDocSniff implements Sniff
             'end' => 0,
             'content' => '',
         ];
-// finding start
+        // finding start
         $defaultStack = $cursor;
 
         // while to column 1
@@ -276,7 +276,7 @@ class OrderOfPhpDocSniff implements Sniff
 
         // Ignore last literation
         $cursor--;
-// Collecting the contents of the block
+        // Collecting the contents of the block
         $result['content'] = [];
 
         for ($stack = $result['start']; $stack <= $result['end']; $stack++) {
