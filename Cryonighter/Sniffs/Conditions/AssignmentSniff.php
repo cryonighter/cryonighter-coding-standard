@@ -17,7 +17,7 @@ namespace Cryonighter\Sniffs\Conditions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class ConditionsAssignmentSniff implements Sniff
+class AssignmentSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
