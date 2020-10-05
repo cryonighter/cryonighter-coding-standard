@@ -84,8 +84,6 @@ class CallMethodMultiLineSniff implements Sniff
                 $indent .= $tokens[$cursor]['content'];
             }
 
-            // $phpcsFile->fixer->addContentBefore($stackPtr, $indent);
-            // $phpcsFile->fixer->addNewlineBefore($stackPtr);
             $current = $phpcsFile->fixer->getTokenContent($stackPtr);
             $phpcsFile->fixer->replaceToken($stackPtr, "\r\n" . $indent . $current);
         }
