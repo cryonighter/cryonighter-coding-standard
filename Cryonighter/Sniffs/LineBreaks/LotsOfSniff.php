@@ -20,6 +20,27 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class LotsOfSniff implements Sniff
 {
     /**
+    * The file being scanned.
+    *
+    * @var File|null
+    */
+    private $phpcsFile = null;
+
+    /**
+    * Array of tokens found in the scanned file
+    *
+    * @var array|null
+    */
+    private $tokens = null;
+
+    /**
+     * The position of the current token in the stack passed in $tokens.
+     *
+     * @var int
+     */
+    private $stackPtr = 0;
+
+    /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
@@ -50,7 +71,19 @@ class LotsOfSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
+        $this->phpcsFile = $phpcsFile;
+        $this->tokens = $this->phpcsFile->getTokens();
+        $this->stackPtr = $stackPtr;
+        $this->mainLoop();
+    }
+
+    /**
+     * Encapsulation from external recursions
+     *
+     * @return void
+     */
+    private function mainLoop()
+    {
         $msg = 'LineBreaks. More than one line-break';
         $rules = [
             'T_SWITCH',
@@ -67,98 +100,147 @@ class LotsOfSniff implements Sniff
             'T_CLASS',
             'T_RETURN',
         ];
-        
-        // skip not clean line
-        if ($tokens[$stackPtr]['column'] > 1) {
-            if ($tokens[$stackPtr - 1]['type'] == 'T_CLOSE_CURLY_BRACKET') {
-                return null;
-            }
-
-            if ($tokens[$stackPtr - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
-                return null;
-            }
-
-            if (isset($tokens[$stackPtr + 2]['type'])) {
-                if (in_array($tokens[$stackPtr + 2]['type'], $rules)) {
-                    return null;
-                }
-            }
-
-            if (isset($tokens[$stackPtr + 2]['type'])) {
-                if (in_array($tokens[$stackPtr + 2]['type'], $classRules)) {
-                    return null;
-                }
-            }
-
-            if (isset($tokens[$stackPtr + 3]['type'])) {
-                if (in_array($tokens[$stackPtr + 3]['type'], $rules)) {
-                    return null;
-                }
-            }
-
-            if (isset($tokens[$stackPtr + 4]['type'])) {
-                if (in_array($tokens[$stackPtr + 4]['type'], $rules)) {
-                    return null;
-                }
-            }
-
-            if (isset($tokens[$stackPtr + 5]['type'])) {
-                if (in_array($tokens[$stackPtr + 5]['type'], $rules)) {
-                    return null;
-                }
-            }
-        }
 
         // skip one-line tokens
-        if ($tokens[$stackPtr]['content'] == nl2br($tokens[$stackPtr]['content'])) {
+        if ($this->tokens[$this->stackPtr]['content'] === nl2br($this->tokens[$this->stackPtr]['content'])) {
             return null;
         }
 
+        // skip not clean line
+        if ($this->tokens[$this->stackPtr]['column'] > 1) {
+            // is not empty line
+            if ($this->tokens[$this->stackPtr]['content'] !== nl2br($this->tokens[$this->stackPtr]['content'])) {
+                return null;
+            }
+
+            if ($this->tokens[$this->stackPtr - 1]['type'] == 'T_CLOSE_CURLY_BRACKET') {
+                return null;
+            }
+
+            if ($this->tokens[$this->stackPtr - 1]['type'] == 'T_DOC_COMMENT_CLOSE_TAG') {
+                return null;
+            }
+
+            if (isset($this->tokens[$this->stackPtr + 2]['type'])) {
+                if (in_array($this->tokens[$this->stackPtr + 2]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($this->tokens[$this->stackPtr + 2]['type'])) {
+                if (in_array($this->tokens[$this->stackPtr + 2]['type'], $classRules)) {
+                    return null;
+                }
+            }
+
+            if (isset($this->tokens[$this->stackPtr + 3]['type'])) {
+                if (in_array($this->tokens[$this->stackPtr + 3]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($this->tokens[$this->stackPtr + 4]['type'])) {
+                if (in_array($this->tokens[$this->stackPtr + 4]['type'], $rules)) {
+                    return null;
+                }
+            }
+
+            if (isset($this->tokens[$this->stackPtr + 5]['type'])) {
+                if (in_array($this->tokens[$this->stackPtr + 5]['type'], $rules)) {
+                    return null;
+                }
+            }
+        }
+
         // skip first file line token
-        if (!isset($tokens[$stackPtr - 1]['content'])) {
+        if (!isset($this->tokens[$this->stackPtr - 1]['content'])) {
             return null;
         }
 
         // skip last file line token
-        if (!isset($tokens[$stackPtr + 1]['content'])) {
+        if (!isset($this->tokens[$this->stackPtr + 1]['content'])) {
             return null;
         }
 
         // skip not-first space line tokens
-        if ($tokens[$stackPtr - 1]['type'] == 'T_WHITESPACE' && $tokens[$stackPtr - 1]['column'] == 1) {
-            if ($tokens[$stackPtr - 1]['content'] != nl2br($tokens[$stackPtr - 1]['content'])) {
+        if ($this->tokens[$this->stackPtr - 1]['type'] == 'T_WHITESPACE' && $this->tokens[$this->stackPtr - 1]['column'] == 1) {
+            if ($this->tokens[$this->stackPtr - 1]['content'] !== nl2br($this->tokens[$this->stackPtr - 1]['content'])) {
                 return null;
             }
         }
 
         // skip lonely line tokens
-        if ($tokens[$stackPtr + 1]['type'] != 'T_WHITESPACE') {
+        if ($this->tokens[$this->stackPtr + 1]['type'] != 'T_WHITESPACE') {
             return null;
         }
 
         // skip lonely line tokens
-        if ($tokens[$stackPtr + 1]['content'] == nl2br($tokens[$stackPtr + 1]['content'])) {
+        if ($this->tokens[$this->stackPtr + 1]['content'] == nl2br($this->tokens[$this->stackPtr + 1]['content'])) {
             return null;
         }
         
         // generate error output
-        $fix = $phpcsFile->addFixableError($msg, $stackPtr, 'Found');
+        $fix = $this->generateError($this->stackPtr, $msg);
+    }
 
-        if ($fix === true) {
-            $cursor = $stackPtr;
-            $cursor++;
-            $phpcsFile->fixer->beginChangeset();
+    /**
+     * generate error output
+     *
+     * @param string $msg
+     * @param int    $cursor
+     *
+     * @return null
+     */
+    private function generateError($cursor, $msg = '')
+    {
+        // no auto-fixableble error
+        if (empty($cursor)) {
+            $msg = 'LineBreaks. Unknown error. ' . get_class($this) . ';';
+            $this->phpcsFile->addError($msg, 0, 'Found');
 
-            while ($tokens[$cursor]['type'] == 'T_WHITESPACE' && $tokens[$cursor]['content'] !== nl2br($tokens[$cursor]['content'])) {
-                if (!isset($tokens[$cursor]['content'])) {
-                    break;
-                }
-                
-                $phpcsFile->fixer->replaceToken($cursor, '');
-                $cursor++;
-            }
-
-            $phpcsFile->fixer->endChangeset();
+            return null;
         }
+
+        // no auto-fixableble error
+        if (empty($msg)) {
+            $msg = 'LineBreaks. Unknown error. ' . get_class($this) . ';';
+            $this->phpcsFile->addError($msg, $cursor, 'Found');
+
+            return null;
+        }
+
+        $fix = $this->phpcsFile->addFixableError($msg, $this->stackPtr, 'Found');
+        $this->fixThisError($this->stackPtr, $fix);
+    }
+
+    /**
+     * We try to automatically resolve errors
+     *
+     * @param boolean $fix Variable describing the status of the error solution
+     * @param int     $cursor
+     *
+     * @return null    Early exit from the procedure
+     */
+    private function fixThisError($cursor, $fix = false)
+    {
+        // Skip resolved problem
+        if ($fix !== true) {
+            return null;
+        }
+
+        $cursor = $this->stackPtr;
+        $cursor++;
+        $this->phpcsFile->fixer->beginChangeset();
+
+        while ($this->tokens[$cursor]['type'] == 'T_WHITESPACE' && $this->tokens[$cursor]['content'] !== nl2br($this->tokens[$cursor]['content'])) {
+            if (!isset($this->tokens[$cursor]['content'])) {
+                break;
+            }
+            
+            $this->phpcsFile->fixer->replaceToken($cursor, '');
+            $cursor++;
+        }
+
+        $this->phpcsFile->fixer->endChangeset();
     }
 }

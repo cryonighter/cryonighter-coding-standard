@@ -150,16 +150,13 @@ class StartOfFileSniff implements Sniff
     /**
      * generate error output
      *
-     * @param string  $msg
-     * @param int     $cursor
-     * @param boolean $fix Variable describing the status of the error solution
+     * @param string $msg
+     * @param int    $cursor
      *
      * @return null
      */
     private function generateError($cursor, $msg = '')
     {
-        var_dump($this->tokens[$cursor]);
-        var_dump($this->errType);
         // To use protection 'fore I bit into your forbidden fruit
         if (!isset($this->errorTypeDecoding()[$this->errType])) {
             $msg = 'Structure. Unknown error. ' . get_class($this) . ';';

@@ -17,7 +17,7 @@ namespace Cryonighter\Sniffs\Comments;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class BracketCloseCommentSniff implements Sniff
+class AfterSemicolumnSniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.

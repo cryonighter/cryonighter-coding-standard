@@ -85,7 +85,7 @@ class ReturnEmptyLineBeforeSniff implements Sniff
 
             $tokenPrev = $tokens[$stackPtrPrev];
 
-            if (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) && nl2br($tokenPrev['content']) != $tokenPrev['content']) {
+            if (in_array($tokenPrev['type'], ['T_WHITESPACE', 'T_COMMENT']) && nl2br($tokenPrev['content']) !== $tokenPrev['content']) {
                 $emptyLines++;
             }
 
@@ -132,7 +132,6 @@ class ReturnEmptyLineBeforeSniff implements Sniff
                     $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken($cursor, $content);
                     $phpcsFile->fixer->endChangeset();
-                    // $phpcsFile->fixer->addNewlineBefore($cursor);
                 } else {
                     $phpcsFile->fixer->beginChangeset();
                     $target = $thisLine - $spaceLineSize;
